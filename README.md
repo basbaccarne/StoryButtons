@@ -12,6 +12,12 @@ small XIAO set-up that supports "touch to listen" interactions
 | Headphone | [JBL Wired](https://www.bol.com/be/nl/p/jbl-tune-500-on-ear-koptelefoon-zwart/9200000098045179/) | €26 |
 | **Total** |  | **€46** |
 
+**schematic**
+<div align="left">  
+<img src="img/schematic.png" width="600">
+</div>
+
+
 **tests**   
 * [Button Push](tests/touch.ino)
 * [Play sound file](tests/audio.ino)
