@@ -23,7 +23,7 @@ small XIAO set-up that supports "touch to listen" interactions
 
 **tests**   
 * [Button Push](tests/touch.ino)
-* [Play sound file](tests/audio.ino)
+* [Play sound file](tests/sound.ino)
 * [Hold to listen](tests/holdtolisten.ino)
 
 **Actions**
