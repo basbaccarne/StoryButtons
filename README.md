@@ -38,13 +38,13 @@ small XIAO set-up that supports "touch to listen" interactions
 * [Good tutorial](https://www.youtube.com/watch?v=MsdJgEinb34&t=23s)
 * If tou want to step up your game: work with the intergrated PCB modules in CAD (eg. in Gerber is intergrated in Fusion)
 
-  **workflow**
-  1. **test**: Test circuit and code on a breadboard
-  2. **parts**: Research the components you need (tip: note down part numbers)
-  3. **place**: Open an easyEDA project, search and place your components (cfr part numbers) using the library module
-  4. **connect***: Wire your components together (circruit design)
-  5. **position**: Position components on the two sides of the breadboard
-  6. **refine**: Optimize wires & add text
-  7. **Export**: Export step file for import in CAD (crosscheck & go back if corrections are needed)
-  8. **Order**: EasyEDA allows direct orders on PCBWay
+**workflow**
+1. **test**: Test circuit and code on a breadboard
+2. **parts**: Research the components you need (tip: note down part numbers)
+3. **place**: Open an easyEDA project, search and place your components (cfr part numbers) using the library module
+4. **connect***: Wire your components together (circruit design)
+5. **position**: Position components on the two sides of the breadboard
+6. **refine**: Optimize wires & add text
+7. **Export**: Export step file for import in CAD (crosscheck & go back if corrections are needed)
+8. **Order**: EasyEDA allows direct orders on PCBWay
  
