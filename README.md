@@ -30,3 +30,10 @@ small XIAO set-up that supports "touch to listen" interactions
 - [ ] LED Ring for Duration
 - [ ] Technical Concept multiple stories & in situ installation (power etc)
 - [ ] Housing (& custom PCB?)
+
+## Background
+### Create a custom PCB
+* For this case, I'm creating a custom PCB to illustrate the flow on a simple example
+* If you're new to this, it might be easer to work in [easyEDA](easyeda.com), then import the STEP file in you CAD program
+* [Good tutorial](https://www.youtube.com/watch?v=MsdJgEinb34&t=23s)
+* If tou want to step up your game: work with the intergrated PCB modules in CAD (eg. in Gerber is intergrated in Fusion) 
