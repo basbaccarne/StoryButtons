@@ -49,6 +49,21 @@ small XIAO set-up that supports "touch to listen" interactions
 8. **Order**: EasyEDA allows direct orders on PCBWay
 
 **parts**   
-When adding parts
+When adding parts   
+* Part are built out of 3 components: (1) schematic (2) footprint (3) 3D model
 * Check if there is a version in the library (crosscheck foorptint)
 * If not: create your own schematic & footprint (start from [datasheet](https://www.schurter.com/en/datasheet/typ_4840.2201.pdf) and [available models](https://www.digikey.be/nl/models/2644239))
+* In some software you can import this directly (for easyEDA, this is a payed feature)
+* Create you own component (or crosscheck user contributed part):
+  * Create new schematic
+    * Schematic representation
+    * Functional: add pins (figure out: name versus number)
+    * Add metadata (data sheet, url, manufacturer, ...)
+    * Use correct prefix (e.g. for a jack connection, this is J?)  
+  * Create new footprint
+    * Start with reference point and use x-y coordinates
+    * Add pads (number them correctly)
+    * Use silk layer for things you want to print on the PCB
+    * Go back to schematic and add footprint
+  * Add 3D Model 
+* Typical width of the ring: 0.15 mm to 0.2 mm
