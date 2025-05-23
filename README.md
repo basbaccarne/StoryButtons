@@ -65,5 +65,8 @@ When adding parts
     * Add pads (number them correctly)
     * Use silk layer for things you want to print on the PCB
     * Go back to schematic and add footprint
-  * Add 3D Model 
+  * Add 3D Model
+    * Look for wrl file online
+    * Open Tools 3D model manager
+    * Go to footprint and add 3D model
 * Typical width of the ring: 0.15 mm to 0.2 mm
