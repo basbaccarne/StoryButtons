@@ -47,4 +47,8 @@ small XIAO set-up that supports "touch to listen" interactions
 6. **refine**: Optimize wires & add text
 7. **Export**: Export step file for import in CAD (crosscheck & go back if corrections are needed)
 8. **Order**: EasyEDA allows direct orders on PCBWay
- 
+
+**parts**   
+When adding parts
+* Check if there is a version in the library (crosscheck foorptint)
+* If not: create your own schematic & footprint (start from [datasheet](https://www.schurter.com/en/datasheet/typ_4840.2201.pdf) and [available models](https://www.digikey.be/nl/models/2644239))
