@@ -1,6 +1,6 @@
 /* The XIAO ESP32 S3 has 9 capacitive touch pads
 This testscript reads the signals as a way to test and calibrate
-The touchRead function reads the capacitance and lowers when touched
+What is this data? It is an indication of the capacitor discharge time.
 */
 
 void setup(){
@@ -9,6 +9,6 @@ void setup(){
 
 void loop(){
     int touchValue = touchRead(2);
-    Serial.print(touchValue);
+    Serial.println(touchValue);
     delay(50);
 }

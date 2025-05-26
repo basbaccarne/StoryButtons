@@ -38,6 +38,12 @@ Interations
 * [Hold to listen](tests/holdtolisten.ino)
 * [Push & start led countdown](tests/push_and_count.ino)
 
+Communication   
+We will handle communication using ESP-NOW
+* [Step 1 - Get MAC adress of each device](tests/mac.ino)
+* [Step 2 - send data & listen to response (device MAC D8:3B:DA:73:C6:74)](tests/device1.ino)
+* [step 3 - listen to response and answer when message received (device MAC D8:3B:DA:73:C4:58)](tests/device2.ino)
+
 
 **Actions**
 - [ ] Technical Concept multiple stories & in situ installation (power etc)
