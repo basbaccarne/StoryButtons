@@ -10,19 +10,25 @@
 #include <WiFi.h>
 
 // Who are my peers?
-uint8_t hub_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58};
+uint8_t hub_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 };
 int button_ID = 1;
 
 // variable to audio length in milliseconds
-int lastReceivedAudioLength = 0; 
+volatile int lastReceivedAudioLength = 0;
+volatile bool newAudioData = false;
+
+// variable to track if the device is playing
+bool playing = false;
+
+// pins
+const int buttonPin = 2;
 
 // Function to handle incoming data (store audio length in lastReceivedAudioLength)
 // This function is called when data is received from the hub (like an interrupt handler)
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   if (len == sizeof(int)) {
-    memcpy(&lastReceivedAudioLength, data, sizeof(int));  // Copy raw bytes into int
-    Serial.print("Received Audio Length: ");
-    Serial.println(lastReceivedAudioLength);
+    memcpy((void*)&lastReceivedAudioLength, data, sizeof(int));
+    newAudioData = true;
   }
 }
 
@@ -42,7 +48,7 @@ void setup() {
   peerInfo.channel = 0;
   peerInfo.encrypt = false;
 
-  // Ensure the peer is registered before sending. 
+  // Ensure the peer is registered before sending.
   // Otherwise, esp_now_send() will silently fail.
   // esp_now_add_peer(&peerInfo); would assume success
   if (!esp_now_is_peer_exist(hub_mac)) {
@@ -52,22 +58,46 @@ void setup() {
     }
   }
 
-  int touchValueBase = touchRead(2); // Read initial touch value for calibration
-  Serial.println("Button sender ready"); 
+  pinMode(buttonPin, INPUT);
+  Serial.println("Button sender ready");
 }
 
 void loop() {
-  
-  // send the button ID to the hub
-  esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&button_ID, sizeof(button_ID));
 
-  // Check if the send was successful
-  if (result == ESP_OK) {
-    Serial.print("Sent button ID to hub: ");
-    Serial.println(button_ID);
-  } else {
-    Serial.printf("Send error: %d\n", result);
+  int buttonvalue = touchRead(buttonPin);
+  // If button is held
+  if (buttonvalue > 15000) {
+    // If not already playing
+    if (!playing) {
+      playing = true;
+      Serial.println("Button pressed...");
+
+      // send the button ID to the hub
+      esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&button_ID, sizeof(button_ID));
+
+      // Check if the send was successful
+      if (result == ESP_OK) {
+        Serial.printf("Sent button ID: %d\n", button_ID);
+      } else {
+        Serial.printf("Send error: %d\n", result);
+      }
+    }
+  // Print audio length if just received
+    if (newAudioData) {
+      Serial.printf("Received audio length: %d ms\n", lastReceivedAudioLength);
+      newAudioData = false;
+    }
   }
 
-  delay(1000);
+  // If button is released → reset strip
+  else {
+    if (playing) {
+      delay(100);  // Optional debounce
+      playing = false;
+      Serial.println("Button released.");
+    }
+  }
+
+  // Small delay to avoid rapid looping
+  delay(10);
 }

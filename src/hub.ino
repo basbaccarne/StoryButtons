@@ -13,17 +13,17 @@ uint8_t button1_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74};
 
 // variable to audio length in milliseconds
 int lastReceivedButtonID = 0; // Variable to store the last received button ID
-int audioLength = random(5000, 15000); // Random length between 5 and 15 seconds
 
 // Function to handle incoming data (store audio length in lastReceivedButtonID)
 // This function is called when data is received from the hub (like an interrupt handler)
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
-
   if (len == sizeof(int)) {
-    memcpy(&lastReceivedButtonID, data, sizeof(int));  // Copy raw bytes into int
-    Serial.print("Received press from button: ");
-    Serial.println(lastReceivedButtonID);
+    memcpy((void*)&lastReceivedButtonID, data, sizeof(int));
+    Serial.printf("Received press from button ID: %d\n", lastReceivedButtonID);
   }
+
+  int audioLength = random(5000, 15000);  // 5–15 seconds
+  Serial.printf("Sending audio length: %d ms\n", audioLength);
 
   // Send back the audio length to the button
   esp_now_send(info->src_addr, (uint8_t *)&audioLength, sizeof(audioLength));

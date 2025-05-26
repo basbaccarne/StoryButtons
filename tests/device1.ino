@@ -51,6 +51,7 @@ void setup() {
 }
 
 void loop() {
+
   const char *msg = "Hello";
   esp_err_t result = esp_now_send(peerAddress, (const uint8_t *)msg, strlen(msg));
 
