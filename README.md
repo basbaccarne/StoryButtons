@@ -21,12 +21,24 @@ small XIAO set-up that supports "touch to listen" interactions
 </div>
 
 
-**tests**   
-* [Button Push](tests/touch.ino)
-* [Play sound file](tests/audio.ino)
+**tests**  
+Input    
+* Touch: [Detect Touch](tests/touch.ino)
+* Touch: [Continuous reading of capacitive touch pads](tests/capacitive.ino)   
+* Push: [Pullup button](test/push.ino)
+
+Output (audio)   
+* [Play sound file](tests/audio.ino)   
+
+Output (led ring)
+* [LED ring simple chase animation](tests/ledring.ino)   
+* [LED ring countdown](tests\ledring_countdown.ino)
+
+Interations   
 * [Hold to listen](tests/holdtolisten.ino)
+* [Push & start led countdown](tests/push_and_count.ino)
+
 
 **Actions**
-- [ ] LED Ring for Duration
 - [ ] Technical Concept multiple stories & in situ installation (power etc)
 - [ ] Housing (& custom PCB?)
