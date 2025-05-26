@@ -1,3 +1,4 @@
+// DEVICE B
 // This scripts listens for data and responds on a received message
 // beware: add wifi antenna or it won't work ;)
 
