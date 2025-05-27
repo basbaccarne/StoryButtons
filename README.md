@@ -1,7 +1,7 @@
 # StoryButtons
 StoryButtons is an interactive audio installation featuring wireless LED-ringed buttons that play recorded stories from children about their inventions. Designed for libraries and educational spaces, each button triggers a unique story, creating a playful and engaging way to explore young creativity. This repository contains the code, hardware setup, and deployment instructions for building your own StoryButtons system.
 
-⚡ *A  [comon](http://www.comon.gent) spark.* ⚡    
+*⚡A  [comon](http://www.comon.gent) spark⚡*    
 *Tinkered with* ❤ *by Bas Baccarne*   
 *Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Fran Burger & Stephanie Van Hove*
 
