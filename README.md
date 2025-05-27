@@ -1,23 +1,22 @@
 # StoryButtons
 StoryButtons is an interactive audio installation featuring wireless LED-ringed buttons that play recorded stories from children about their inventions. Designed for libraries and educational spaces, each button triggers a unique story, creating a playful and engaging way to explore young creativity. This repository contains the code, hardware setup, and deployment instructions for building your own StoryButtons system.
 
-*A [comon](http://www.comon.gent) project.*    
+⚡ *A  [comon](http://www.comon.gent) spark.* ⚡    
 *Tinkered with* ❤ *by Bas Baccarne*   
 *Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Fran Burger & Stephanie Van Hove*
 
 ## Concept
-StoryButtons has two module types  
-1. **Independent push buttons**
+**Independent push buttons**
   * One button per invention (as many as you want), each powered by 5V.
   * When pushed, they send their ID to the hub that answers with the length of the associated audio file (over ESP-NOW).
   * As long as pushed a led ring counts down depending on the audio duration.
   * When released, the button sends a signal to the hub to stop the audio.
 
-  2. **Listenhub**
+**Listen hub**
   * Single hub (or multiple if you want them on multiple places), powered by 5V.
   * Listens to incoming IDs and plays the associated audio file (and send back duration to the sending button).
   * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
-  * The audio can be consumed through headphones.
+  * The audio can be listened to through headphones.
   * The listen hub has an enticing and stimulating design.
 
 ## Parts list
