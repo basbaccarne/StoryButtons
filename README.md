@@ -23,22 +23,30 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | Part     | Link    | Cost   | Amount  |
 | -------- | ------- |------- | ------- |
 | **Independent Push Buttons** (N=4)|
-| XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 4 |
-| Stainless steel button | [Conrad](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html?searchType=SearchRedirect)          | €7 | 4 |
+|  XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 4 |
+|  Stainless steel button | [Conrad](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html?searchType=SearchRedirect)          | €7 | 4 |
 | LED ring | [Adafruit](https://www.adafruit.com/product/1463) | €16 | 4 |
 | Diode | [Digikey](https://www.digikey.be/en/products/detail/stmicroelectronics/1N5819/1037326)| €0.3 | 4 |
-| DCBarrel jack connector | [Digikey](https://www.digikey.be/en/products/detail/schurter-inc/4840-2201/2644239) | €3| 4 |
-| Acryl sheet | experimentation| | |
-| 5V power adapter | | | | 
+| DC Barrel jack connector | [Digikey](https://www.digikey.be/en/products/detail/schurter-inc/4840-2201/2644239) | €3| 4 |
+| Acryl sheet | [kunstofplaten](https://kunststofplaten.be/) (experiment)| | |
+| 5V power adapter | [Digikey](https://www.digikey.be/en/products/filter/ac-dc-desktop-wall-power-adapters/130)| €6 | 1 | 
+| Female barrel connection | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | €1.5 | 1 |
+| Male barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | €2 | 4 |
+| Power wires (flexible) | |||
+| Cable manager/guide |
+| Adhesive Cable Tie Mounts |
 | Custom PCB (N=5) | [JLCPCB](https://jlcpcb.com/) | €30 |  1 |
 | M3 x 4 x 5 treaded inserts | | | |
 | Stand-offs | | | |
 | M3 screws | | | |
+| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 8 |  
 | **Listen hub** |
 | XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 1 |
 | DFPlayer Mini    | [DFRobot](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)      | €6 | 1 |
-| Female 3.5mm jack | [Allekabels](https://www.onlinekabelshop.nl/35mm-jack-v-stereo-open-eind-audiokabel-zwart-030.html) | €2 | 1 |
+| Female 3.5mm jack | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995) | €3 | 1 |
 | Headphone | [JBL Wired](https://www.bol.com/be/nl/p/jbl-tune-500-on-ear-koptelefoon-zwart/9200000098045179/) | €26 | 1 |
+| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 2 | 
+| Header stack 8p | [Digikey](https://www.digikey.be/en/products/detail/sullins-connector-solutions/PPTC081LFBN-RC/810147)| €0.5 | 2 |  
 | **Total** |  | **€76** |
 
 ## Construction
