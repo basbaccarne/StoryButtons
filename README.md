@@ -26,11 +26,11 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 4 |
 | Stainless steel button | [Conrad](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html?searchType=SearchRedirect)          | €7 | 4 |
 | LED ring | [Adafruit](https://www.adafruit.com/product/1463) | €16 | 4 |
-| Diode | | | 4 |
-| Barrel jack connector | | | 4 |
-| Acryl sheet | | | |
+| Diode | [Digikey](https://www.digikey.be/en/products/detail/stmicroelectronics/1N5819/1037326)| €0.3 | 4 |
+| DCBarrel jack connector | [Digikey](https://www.digikey.be/en/products/detail/schurter-inc/4840-2201/2644239) | €3| 4 |
+| Acryl sheet | experimentation| | |
 | 5V power adapter | | | | 
-| Custom PCB | JLCPCB | €40 |  1 |
+| Custom PCB (N=5) | [JLCPCB](https://jlcpcb.com/) | €30 |  1 |
 | M3 x 4 x 5 treaded inserts | | | |
 | Stand-offs | | | |
 | M3 screws | | | |
