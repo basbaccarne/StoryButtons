@@ -1,9 +1,27 @@
-# Listenmodule
-small XIAO set-up that supports "touch to listen" interactions
+# StoryButtons
+StoryButtons is an interactive audio installation featuring wireless LED-ringed buttons that play recorded stories from children about their inventions. Designed for libraries and educational spaces, each button triggers a unique story, creating a playful and engaging way to explore young creativity. This repository contains the code, hardware setup, and deployment instructions for building your own StoryButtons system.
 
-*by: Bas Baccarne*
+*A [comon](http://www.comon.gent) project.*    
+*Tinkered with* ❤ *by Bas Baccarne*   
+*Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke & Stephanie Van Hove*
 
-**components**
+## Concept
+Storybuttons has two components  
+1. **Independent push buttons**
+  * One button per invention (as many as you want).
+  * Powered by 5V.
+  * When pushed, they send their ID to the hub that answers with the length of the associated audio file (over ESP-NOW).
+  * As long as pushed a led ring counts down depending on the audio duration.
+  * When released, the button sends a signal to the hub to stop the audio.
+
+  2. **Listenhub**
+  * Single hub (or multiple if you want them on multiple places).
+  * Listens to incoming IDs and plays the associated audio file (and send back duration to the sending button).
+  * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
+  * The audio can be consumed through headphones.
+  * The listen module has an enticing and stimulating design.
+
+## Parts list
 | Part     | Link    | Cost   |
 | -------- | ------- |------- |
 | XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €7 |
@@ -21,33 +39,35 @@ small XIAO set-up that supports "touch to listen" interactions
 </div>
 
 
-**tests**  
-Input    
-* Touch: [Detect Touch](tests/touch.ino)
+## tests
+**Input** (touch - Button) 
+* Push: [Pull-up button](test/push.ino)
 * Touch: [Continuous reading of capacitive touch pads](tests/capacitive.ino)   
-* Push: [Pullup button](test/push.ino)
+(curious towards the 9 capacitive touchpads on the XIAO ESP32S3)   
 
-Output (audio)   
+**Output** (audio - DFplayer)   
 * [Play sound file](tests/audio.ino)   
 
-Output (led ring)
+**Output** (led ring - Neopixel)
 * [LED ring simple chase animation](tests/ledring.ino)   
 * [LED ring countdown](tests\ledring_countdown.ino)
 
-Interations   
+**Interations**   
 * [Hold to listen](tests/holdtolisten.ino)
 * [Push & start led countdown](tests/push_and_count.ino)
 
-Communication   
-We will handle communication using ESP-NOW
-* [Step 1 - Get MAC adress of each device](tests/mac.ino)
+**Communication** (ESP-NOW)   
+* [Step 1 - Get MAC adress of the devices](tests/mac.ino)
 * [Step 2 - send data & listen to response (device MAC D8:3B:DA:73:C6:74)](tests/device1.ino)
 * [step 3 - listen to response and answer when message received (device MAC D8:3B:DA:73:C4:58)](tests/device2.ino)
 
 
-**Actions**
-- [ ] Technical Concept multiple stories & in situ installation (power etc)
-- [ ] Housing (& custom PCB?)
+## Actions
+- [ ] Assemble button
+- [ ] Soft fade led ring
+- [ ] Technical test listen hub
+- [ ] Concept listen hub
+- [ ] Buy final components
 
 ## Background
 ### Create a custom PCB
