@@ -3,23 +3,22 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 *A [comon](http://www.comon.gent) project.*    
 *Tinkered with* ❤ *by Bas Baccarne*   
-*Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke & Stephanie Van Hove*
+*Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Fran Burger & Stephanie Van Hove*
 
 ## Concept
-Storybuttons has two components  
+StoryButtons has two module types  
 1. **Independent push buttons**
-  * One button per invention (as many as you want).
-  * Powered by 5V.
+  * One button per invention (as many as you want), each powered by 5V.
   * When pushed, they send their ID to the hub that answers with the length of the associated audio file (over ESP-NOW).
   * As long as pushed a led ring counts down depending on the audio duration.
   * When released, the button sends a signal to the hub to stop the audio.
 
   2. **Listenhub**
-  * Single hub (or multiple if you want them on multiple places).
+  * Single hub (or multiple if you want them on multiple places), powered by 5V.
   * Listens to incoming IDs and plays the associated audio file (and send back duration to the sending button).
   * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
   * The audio can be consumed through headphones.
-  * The listen module has an enticing and stimulating design.
+  * The listen hub has an enticing and stimulating design.
 
 ## Parts list
 | Part     | Link    | Cost   |
@@ -33,13 +32,12 @@ Storybuttons has two components
 | Headphone | [JBL Wired](https://www.bol.com/be/nl/p/jbl-tune-500-on-ear-koptelefoon-zwart/9200000098045179/) | €26 |
 | **Total** |  | **€76** |
 
-**schematic**
+## Construction
 <div align="left">  
 <img src="img/schematic.png" width="600">
 </div>
 
-
-## tests
+## Tests
 **Input** (touch - Button) 
 * Push: [Pull-up button](test/push.ino)
 * Touch: [Continuous reading of capacitive touch pads](tests/capacitive.ino)   
