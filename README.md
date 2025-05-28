@@ -33,7 +33,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | Female DC barrel connection PCB | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | €1.5 | 1 |
 | Male DC barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | €2 | 4 |
 | Custom PCB (N=5) | [JLCPCB](https://jlcpcb.com/) | €30 |  1 |
-| M3 x 4 x 5 treaded inserts | | | |
+| M3 x 4 x 5 threaded inserts | [bol.com (n=20)](https://www.bol.com/be/nl/p/a4-zakken-met-klep-en-hersluitbare-kleefstrip-21cm-x-28cm-10-stuks/9300000023960213/?cid=1748443406870-9935155426064&bltgh=r6bKVrFF-khjU55WRmNDwA.4_39.48.ProductTitle) | €11 | 1 |
 | Stand-offs | | | |
 | M3 screws | | | |
 | Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 8 |
@@ -57,11 +57,13 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 * The ledring holder, sleeve and bottom are 3D printed
   * [Downloadable model in Fusion](https://a360.co/4kx6gfg)
 * I'm using a custom PCB
-
-
-<div align="left">  
-<img src="img/schematic.png" width="600">
-</div>
+  <div align="left">  
+  <img src="img/schematic.png" width="600">
+  </div>
+  <div align="left">  
+  <img src="img/pcb.svg" width="300">
+  <img src="img/pcb_model.png" width="300">
+  </div>
 
 ## Tests
 **Input** (touch - Button) 
