@@ -32,14 +32,14 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | 5V power adapter | [Digikey](https://www.digikey.be/en/products/filter/ac-dc-desktop-wall-power-adapters/130)| €6 | 1 | 
 | Female barrel connection | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | €1.5 | 1 |
 | Male barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | €2 | 4 |
-| Power wires (flexible) | |||
-| Cable manager/guide |
-| Adhesive Cable Tie Mounts |
 | Custom PCB (N=5) | [JLCPCB](https://jlcpcb.com/) | €30 |  1 |
 | M3 x 4 x 5 treaded inserts | | | |
 | Stand-offs | | | |
 | M3 screws | | | |
-| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 8 |  
+| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 8 |
+| Power wires (flexible) | |||
+| Cable manager/guide |  
+| Adhesive Cable Tie Mounts |
 | **Listen hub** |
 | XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 1 |
 | DFPlayer Mini    | [DFRobot](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)      | €6 | 1 |
@@ -66,10 +66,12 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 **Output** (led ring - Neopixel)
 * [LED ring simple chase animation](tests/ledring.ino)   
 * [LED ring countdown](tests\ledring_countdown.ino)
+* [LED softpulse](tests\softpulse.ino)
 
 **Interations**   
 * [Hold to listen](tests/holdtolisten.ino)
 * [Push & start led countdown](tests/push_and_count.ino)
+* [Play sound ID based on ESP-NOW signal](tests/targetted_audio.ino)
 
 **Communication** (ESP-NOW)   
 * [Step 1 - Get MAC adress of the devices](tests/mac.ino)

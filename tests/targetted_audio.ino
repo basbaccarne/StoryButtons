@@ -1,0 +1,141 @@
+// This test listens to ESP-NOW messages of 4 buttons
+// and plays audio files based on the received ID.
+// playback stops on ID 0.
+
+// For ESP-NOW: beware: add wifi antenna or it won't work ;)
+// Signal wires:
+// * XIAO RX to DF player TX
+// * XIAO TX (via 1k resistor) to DF player RX
+
+// Power wires: The XIAO and the DFmini need 5V regulated power (this requires diode protection)
+/*
++5V (from PSU)
+ ├───|>|─── XIAO 5V
+ │     (Schottky diode)
+ ├──────── DFPlayer VCC
+    
+GND (from PSU)
+ ├──────── XIAO GND
+ ├──────── DFPlayer GND
+ */
+
+// Speaker wires:
+// * Speaker - (3.5 female jack) to DF player SPK1
+// * Speaker + (3.5 female jack) to DF player SPK2
+
+// file structure:
+// files need to start with 4 digits: e.g. 0001.mp3, 0002.mp3, 0003.mp3, etc.
+// after these 4 digits, the file name can be anything: e.g. 0001.mp3, 0001_hello.mp3, 0001_hello_world.mp3, etc.
+// the folder name needs to be "MP3", placed under the SD card "root" directory
+
+// Source: https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/examples/GetStarted/GetStarted.ino 
+
+// Libraries
+#include "DFRobotDFPlayerMini.h"
+#include <esp_now.h>
+#include <WiFi.h>
+
+// Struct to hold track information
+struct Track {
+  uint8_t number;
+  const char* name;
+  unsigned long duration;
+};
+
+// Metadata for the audio tracks (id, name, duration in ms)
+const Track tracks[] = {
+  {1, "Joske",    53000},
+  {2, "Hafsa",    42000},
+  {3, "Lowie",    61000}
+};
+const uint8_t numTracks = sizeof(tracks) / sizeof(tracks[0]);
+
+// ESP-NOW peer addresses
+uint8_t button1_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74};
+// uint8_t button2_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x75};
+// uint8_t button3_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x76};
+// uint8_t button4_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x77};
+
+// Variable to store the received button ID
+int ReceivedButtonID = 0; 
+
+// Variable to store the audio length
+unsigned long audioLength = 0;
+
+// On Arduino Nano 33IOT the TX & RX pins are added to the Serial1 object
+// Name Serial1 as DFSerial to make it clear that it is used for the DFPlayer
+// #define DFSerial Serial1
+// creare a HardwareSerial object for the DFPlayer
+HardwareSerial mySerial(1);  // Use UART1
+DFRobotDFPlayerMini myDFPlayer;
+
+// This function is called when data is received from a button (works like an interrupt handler)
+void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
+  // on valid message
+  if (len == sizeof(int)) {
+    memcpy((void*)&ReceivedButtonID, data, sizeof(int));
+    Serial.printf("Received press from button ID: %d\n", ReceivedButtonID);
+
+    // check if the received button ID is valid
+    if (ReceivedButtonID == 0) {
+        Serial.println("Stopping cue. Stopping playback...");
+        myDFPlayer.pause();
+    } 
+    else if (ReceivedButtonID > 0 && ReceivedButtonID <= numTracks) {
+        Serial.println("Valid track ID.");
+        audioLength = tracks[ReceivedButtonID - 1].duration; // Get the duration of the selected track
+        Serial.printf("Sending back audio length: %d ms\n", audioLength);
+        esp_now_send(info->src_addr, (uint8_t *)&audioLength, sizeof(audioLength));
+        Serial.print("Starting playback of track");
+        Serial.print(tracks[ReceivedButtonID - 1].number);
+        Serial.print(": ");
+        Serial.println(tracks[ReceivedButtonID - 1].name);
+        myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
+    }  
+    else {
+        Serial.println("Invalid button ID. Ignoring...");
+    }
+  }
+}
+
+// Function to registrer all the ESP-NOW peers
+void addPeer(uint8_t *mac) {
+  esp_now_peer_info_t peerInfo = {};
+  memcpy(peerInfo.peer_addr, mac, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+  if (!esp_now_is_peer_exist(mac)) {
+    if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+      Serial.println("Failed to add peer");
+    }
+  }
+}
+
+void setup()
+{
+  // initialize both Serial communications
+  // TX = GPIO43 (D6), RX = GPIO44 (D7)
+  mySerial.begin(115200, SERIAL_8N1, 44, 43); // RX, TX to the DF player
+  Serial.begin(115200);
+
+  // Open the SD card stream
+  myDFPlayer.begin(mySerial);
+  myDFPlayer.volume(10);  //Set volume value. From 0 to 30
+
+  // initiatlize ESP-NOW
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);
+  esp_now_init();
+  esp_now_register_recv_cb(OnDataRecv);
+  
+  addPeer(button1_mac);
+  // addPeer(button2_mac);
+  // addPeer(button3_mac);
+  // addPeer(button4_mac);
+
+  Serial.println("Receiver ready");
+
+}
+
+void loop(){delay(100);}

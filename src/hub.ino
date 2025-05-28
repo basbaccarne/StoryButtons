@@ -11,8 +11,8 @@
 // Who are my peers?
 uint8_t button1_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74};
 
-// variable to audio length in milliseconds
-int lastReceivedButtonID = 0; // Variable to store the last received button ID
+// Variable to store the last received button ID
+int lastReceivedButtonID = 0; 
 
 // Function to handle incoming data (store audio length in lastReceivedButtonID)
 // This function is called when data is received from the hub (like an interrupt handler)
