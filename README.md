@@ -50,6 +50,15 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | **Total** |  | **** |
 
 ## Construction
+**Button module**  
+* The top of the button is a lasercutted piece of acryl 
+  * 3mm perfect settings local laser: `power 65% - speed 0.6%`
+  * 1mm perfect settings local laset: `power 50% - speed 0.8%`
+* The ledring holder, sleeve and bottom are 3D printed
+  * [Downloadable model in Fusion](https://a360.co/4kx6gfg)
+* I'm using a custom PCB
+
+
 <div align="left">  
 <img src="img/schematic.png" width="600">
 </div>
