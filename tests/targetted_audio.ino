@@ -44,9 +44,9 @@ struct Track {
 
 // Metadata for the audio tracks (id, name, duration in ms)
 const Track tracks[] = {
-  {1, "Joske",    53000},
-  {2, "Hafsa",    42000},
-  {3, "Lowie",    61000}
+  {1, "HAL 9000",    16*1000},
+  {2, "Sauruman",    28*1000},
+  {3, "Dobby",       10*1000}
 };
 const uint8_t numTracks = sizeof(tracks) / sizeof(tracks[0]);
 

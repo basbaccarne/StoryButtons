@@ -12,6 +12,7 @@
 // Who are my peers?
 uint8_t hub_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 };
 int button_ID = 1;
+int stopCode = 0;
 
 // variable to audio length in milliseconds
 volatile int lastReceivedAudioLength = 0;
@@ -94,7 +95,8 @@ void loop() {
     if (playing) {
       delay(100);  // Optional debounce
       playing = false;
-      Serial.println("Button released.");
+      Serial.println("Button released. Stopping playback...");
+      esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&stopCode, sizeof(stopCode));
     }
   }
 

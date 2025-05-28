@@ -47,7 +47,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | Headphone | [JBL Wired](https://www.bol.com/be/nl/p/jbl-tune-500-on-ear-koptelefoon-zwart/9200000098045179/) | €26 | 1 |
 | Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 2 | 
 | Header stack 8p | [Digikey](https://www.digikey.be/en/products/detail/sullins-connector-solutions/PPTC081LFBN-RC/810147)| €0.5 | 2 |  
-| **Total** |  | **€76** |
+| **Total** |  | **** |
 
 ## Construction
 <div align="left">  
