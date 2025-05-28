@@ -30,8 +30,8 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | DC Barrel jack connector | [Digikey](https://www.digikey.be/en/products/detail/schurter-inc/4840-2201/2644239) | €3| 4 |
 | Acryl sheet | [kunstofplaten](https://kunststofplaten.be/) (experiment)| | |
 | 5V power adapter | [Digikey](https://www.digikey.be/en/products/filter/ac-dc-desktop-wall-power-adapters/130)| €6 | 1 | 
-| Female barrel connection | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | €1.5 | 1 |
-| Male barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | €2 | 4 |
+| Female DC barrel connection PCB | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | €1.5 | 1 |
+| Male DC barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | €2 | 4 |
 | Custom PCB (N=5) | [JLCPCB](https://jlcpcb.com/) | €30 |  1 |
 | M3 x 4 x 5 treaded inserts | | | |
 | Stand-offs | | | |
