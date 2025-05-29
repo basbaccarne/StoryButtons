@@ -31,6 +31,9 @@ volatile int AudioLength = 10000;
 volatile bool newAudioData = false;
 unsigned long startTime = 0;
 
+// buttonPush tracking
+bool canBepushed = false;
+
 // states
 enum ButtonState {
   BOOT,
@@ -86,20 +89,17 @@ void setup() {
 void boot_sequence() {
   if(previousState != BOOT){
     // start timer
-    unsigned long startTime = millis();
+    startTime = millis();
     Serial.println("Entering BOOT mode ...");
     previousState = BOOT;
   }
   digitalWrite(ledPin, HIGH);
-  delay(500);
-  digitalWrite(ledPin, LOW);
-  delay(500);
+
   // change state after 1 second
   if(millis() - startTime >= 1000){
     currentState = IDLE;
     Serial.println("Entering IDLE mode ...");
   }
-
 }
 
 void idle_sequence(bool buttonPushed) {
@@ -107,12 +107,13 @@ void idle_sequence(bool buttonPushed) {
     previousState = IDLE;
   }
   digitalWrite(ledPin, HIGH);
-  delay(1000);
-  digitalWrite(ledPin, LOW);
-  delay(1000);
-  if(buttonPushed == LOW) {
-    currentState = PLAYING;  // Change to PLAYING state if button is pressed
+  if(buttonPushed == HIGH){
+      canBepushed = true;
+  }
+  if(buttonPushed == LOW && canBepushed) {
+    currentState = PLAYING;
     Serial.println("Button pressed, changing to PLAYING state...");
+    canBepushed = false;
   }
 }
 
@@ -120,7 +121,7 @@ void playing_sequence(int buttonPushed, int AudioLength) {
   // only once
   if(previousState != PLAYING){
     // start timer
-    unsigned long startTime = millis();
+    startTime = millis();
     // send the button ID to the hub
     esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&button_ID, sizeof(button_ID));
     if (result == ESP_OK) {
@@ -141,9 +142,14 @@ void playing_sequence(int buttonPushed, int AudioLength) {
   
   // If button is pressed, stop the audio manually
   if(buttonPushed == HIGH){
+    // start detecting a new push only when the button has been released
+    canBepushed = true;
+  }
+  if(buttonPushed == LOW && canBepushed){
     currentState = MANUAL_STOP;
     Serial.println("Button pressed, changing to MANUAL_STOP state...");
     digitalWrite(ledPin, LOW);
+    canBepushed = false;
   } else {
     if(millis() - startTime >= AudioLength) {
       currentState = AUTOMATIC_STOP;
@@ -184,7 +190,7 @@ void automatic_stop_sequence() {
 
 void loop() {
 
-  int buttonPushed= digitalRead(buttonPin);
+  int buttonPushed = digitalRead(buttonPin);
 
   switch(currentState) {
     case BOOT:
