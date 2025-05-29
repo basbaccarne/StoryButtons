@@ -65,6 +65,10 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   <img src="img/pcb_model.png" width="300">
   </div>
 
+## Code
+* MAC hub: `48:27:E2:E7:1B:F4`
+* MAC button 1: `D8:3B:DA:73:C6:74`
+
 ## Tests
 **Input** (touch - Button) 
 * Push: [Pull-up button](test/push.ino)

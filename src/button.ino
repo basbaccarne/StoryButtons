@@ -10,8 +10,8 @@
 #include <WiFi.h>
 
 // Who are my peers?
-uint8_t hub_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 };
-int button_ID = 1;
+uint8_t hub_mac[] = { 0x48, 0x27, 0xE2, 0xE7, 0x1B, 0xF4 };
+int button_ID = 2;
 int stopCode = 0;
 
 // variable to audio length in milliseconds
@@ -67,12 +67,15 @@ void loop() {
 
   int buttonvalue = touchRead(buttonPin);
   // If button is held
-  if (buttonvalue > 15000) {
+  if (buttonvalue > 16000) {
     // If not already playing
     if (!playing) {
       playing = true;
       Serial.println("Button pressed...");
 
+      // testhack
+      button_ID = random(0, 6);
+      
       // send the button ID to the hub
       esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&button_ID, sizeof(button_ID));
 
@@ -101,5 +104,5 @@ void loop() {
   }
 
   // Small delay to avoid rapid looping
-  delay(10);
+  delay(100);
 }

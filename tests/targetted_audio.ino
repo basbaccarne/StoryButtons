@@ -62,33 +62,34 @@ int ReceivedButtonID = 0;
 // Variable to store the audio length
 unsigned long audioLength = 0;
 
-// On Arduino Nano 33IOT the TX & RX pins are added to the Serial1 object
-// Name Serial1 as DFSerial to make it clear that it is used for the DFPlayer
-// #define DFSerial Serial1
-// creare a HardwareSerial object for the DFPlayer
-HardwareSerial mySerial(1);  // Use UART1
+// create a HardwareSerial object for the DFPlayer (the XIAO way)
+HardwareSerial DFSerial(1); 
 DFRobotDFPlayerMini myDFPlayer;
 
-// This function is called when data is received from a button (works like an interrupt handler)
+// This function is called when data is received from a button 
+// (works like an interrupt handler)
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   // on valid message
   if (len == sizeof(int)) {
     memcpy((void*)&ReceivedButtonID, data, sizeof(int));
-    Serial.printf("Received press from button ID: %d\n", ReceivedButtonID);
+    Serial.print("Received press from button ID: ");
+    Serial.println(ReceivedButtonID);
+    delay(10);
 
     // check if the received button ID is valid
     if (ReceivedButtonID == 0) {
-        Serial.println("Stopping cue. Stopping playback...");
-        myDFPlayer.pause();
-    } 
+      Serial.println("■ Stopping playback ...");
+      myDFPlayer.stop();
+      delay(200); 
+    }
     else if (ReceivedButtonID > 0 && ReceivedButtonID <= numTracks) {
-        Serial.println("Valid track ID.");
         audioLength = tracks[ReceivedButtonID - 1].duration; // Get the duration of the selected track
         Serial.printf("Sending back audio length: %d ms\n", audioLength);
         esp_now_send(info->src_addr, (uint8_t *)&audioLength, sizeof(audioLength));
-        Serial.print("Starting playback of track");
+        delay(10);
+        Serial.print("➤ Starting track ");
         Serial.print(tracks[ReceivedButtonID - 1].number);
-        Serial.print(": ");
+        Serial.print(" - ");
         Serial.println(tracks[ReceivedButtonID - 1].name);
         myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
     }  
@@ -115,11 +116,12 @@ void setup()
 {
   // initialize both Serial communications
   // TX = GPIO43 (D6), RX = GPIO44 (D7)
-  mySerial.begin(115200, SERIAL_8N1, 44, 43); // RX, TX to the DF player
+  DFSerial.begin(9600, SERIAL_8N1, 44, 43); // RX, TX to the DF player
   Serial.begin(115200);
 
   // Open the SD card stream
-  myDFPlayer.begin(mySerial);
+  myDFPlayer.begin(DFSerial);
+  delay(10);
   myDFPlayer.volume(10);  //Set volume value. From 0 to 30
 
   // initiatlize ESP-NOW
