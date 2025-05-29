@@ -17,7 +17,6 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * Listens to incoming IDs and plays the associated audio file (and send back duration to the sending button).
   * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
   * The audio can be listened to through headphones.
-  * The listen hub has an enticing and stimulating design.
 
 ## Parts list
 | Part     | Link    | Cost   | Amount  |
@@ -56,7 +55,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * 1mm perfect settings local laset: `power 50% - speed 0.8%`
 * The ledring holder, sleeve and bottom are 3D printed
   * [Downloadable model in Fusion](https://a360.co/4kx6gfg)
-* I'm using a custom PCB
+* With a custom PCB inside (see Parts list)
   <div align="left">  
   <img src="img/schematic.png" width="600">
   </div>
@@ -65,7 +64,15 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   <img src="img/pcb_model.png" width="300">
   </div>
 
+**Listen Module**
+* The listen module is integrated in a teddybear
+* Inside is a simple box with the components on a breadboard
+
 ## Code
+
+* [Code for the hub](src/hub.ino)
+* [Code for the button](src/button.ino)
+
 * MAC hub: `48:27:E2:E7:1B:F4`
 * MAC button 1: `D8:3B:DA:73:C6:74`
 
@@ -86,13 +93,12 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 **Interations**   
 * [Hold to listen](tests/holdtolisten.ino)
 * [Push & start led countdown](tests/push_and_count.ino)
-* [Play sound ID based on ESP-NOW signal](tests/targetted_audio.ino)
 
 **Communication** (ESP-NOW)   
 * [Step 1 - Get MAC adress of the devices](tests/mac.ino)
 * [Step 2 - send data & listen to response (device MAC D8:3B:DA:73:C6:74)](tests/device1.ino)
 * [step 3 - listen to response and answer when message received (device MAC D8:3B:DA:73:C4:58)](tests/device2.ino)
-
+* [Play sound ID based on ESP-NOW signal](tests/targetted_audio.ino) from a [button](tests/button_espnow.ino)
 
 ## Actions
 - [ ] Assemble button
