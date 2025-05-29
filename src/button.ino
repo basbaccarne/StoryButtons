@@ -104,6 +104,8 @@ void boot_sequence() {
 
 void idle_sequence(bool buttonPushed) {
   if(previousState != IDLE){
+    // debounce
+    delay(10);
     previousState = IDLE;
   }
   digitalWrite(ledPin, HIGH);
@@ -120,6 +122,8 @@ void idle_sequence(bool buttonPushed) {
 void playing_sequence(int buttonPushed, int AudioLength) {
   // only once
   if(previousState != PLAYING){
+    // debounce
+    delay(10);
     // start timer
     startTime = millis();
     // send the button ID to the hub
