@@ -14,17 +14,28 @@
 // Libraries
 #include <esp_now.h>
 #include <WiFi.h>
+#include <Adafruit_NeoPixel.h>
 
 // SETTINGS
-int button_ID = 2;
+int button_ID = 1;
 
 // ESP-NEW identification of hub
 uint8_t hub_mac[] = { 0x48, 0x27, 0xE2, 0xE7, 0x1B, 0xF4 };
 int stopCode = 0;
 
 // pins
-const int buttonPin = 2;
-const int ledPin = 3;
+const int buttonPin = 3;
+const int ledPin = 2;
+const int N_LEDs = 24;
+
+// LED settings and variables
+int brightness = 0;
+unsigned long lastFadeTime = 0;
+unsigned long previousMillis_led;
+float breathAngle = 0;
+
+// configure neopixel strip
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDs, ledPin, NEO_GRB + NEO_KHZ800);
 
 // variables to audio length in milliseconds
 volatile unsigned long AudioLength = 10000;
@@ -66,7 +77,7 @@ void setup() {
   delay(100);
   if (esp_now_init() != ESP_OK) {
     Serial.println("Error initializing ESP-NOW");
-  while (true) delay(1000);
+    while (true) delay(1000);
   }
 
   // Initialize ESP-NOW to send data
@@ -88,6 +99,10 @@ void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
 
+  // initiate neopixel strip
+  strip.begin();
+  strip.show();  // Initialize all pixels to 'off'
+
   Serial.print("✅ Button sender ready. ");
   Serial.print("Button [[");
   Serial.print(button_ID);
@@ -96,16 +111,17 @@ void setup() {
 }
 
 void boot_sequence() {
+  led_boot();
+
   if (previousState != BOOT) {
     // start timer
     startTime = millis();
     Serial.println("🔁 Entering BOOT mode ...");
     previousState = BOOT;
   }
-  digitalWrite(ledPin, HIGH);
 
-  // change state after 1 second
-  if (millis() - startTime >= 1000) {
+  // change state after 2 seconds
+  if (millis() - startTime >= 2000) {
     currentState = IDLE;
   }
 }
@@ -128,9 +144,14 @@ void idle_sequence(bool buttonPushed) {
     Serial.println("🔘 Button pressed.");
     canBepushed = false;
   }
+
+  led_idle();
 }
 
 void wait_for_audio_length_sequence() {
+
+  led_wait_for_audio_length();
+
   static bool sent = false;
 
   if (!sent) {
@@ -171,6 +192,9 @@ void wait_for_audio_length_sequence() {
 }
 
 void playing_sequence(int buttonPushed) {
+
+  led_playing();
+
   // only once
   static bool started = false;
 
@@ -206,28 +230,36 @@ void playing_sequence(int buttonPushed) {
 
   // Interrupt by another button
   if (AudioLength <= 0) {
-      Serial.println();
-      Serial.println("⬅️ Another button took over.");
-      Serial.println("🔁 Switching to OVERLAP_STOP.");
-      currentState = OVERLAP_STOP;
+    Serial.println();
+    Serial.println("⬅️ Another button took over.");
+    Serial.println("🔁 Switching to OVERLAP_STOP.");
+    currentState = OVERLAP_STOP;
   }
 }
 
 void manual_stop_sequence() {
+
   if (previousState != MANUAL_STOP) {
     esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&stopCode, sizeof(stopCode));
     if (result == ESP_OK) {
       Serial.printf("➡️ Sent stop code: %d\n", stopCode);
     } else {
-      Serial.printf("❌ Send error: %d\n", result);    
+      Serial.printf("❌ Send error: %d\n", result);
     }
+    startTime = millis();
     previousState = MANUAL_STOP;
   }
-  digitalWrite(ledPin, LOW);
-  currentState = IDLE;
+
+   led_manual_stop();
+   
+    // change state after 2 seconds
+  if (millis() - startTime >= 2000) {
+    currentState = IDLE;
+  }
 }
 
 void automatic_stop_sequence() {
+
   if (previousState != AUTOMATIC_STOP) {
     esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&stopCode, sizeof(stopCode));
     if (result == ESP_OK) {
@@ -235,20 +267,32 @@ void automatic_stop_sequence() {
     } else {
       Serial.printf("❌ Send error: %d\n", result);
     }
+    startTime = millis();
     previousState = AUTOMATIC_STOP;
   }
-  digitalWrite(ledPin, LOW);
-  currentState = IDLE;
+
+  led_automatic_stop();
+    // change state after 2 seconds
+  if (millis() - startTime >= 2000) {
+    currentState = IDLE;
+  }
 }
 
 void overlap_stop_sequence() {
+  
   // This state is not used in this implementation, but can be used for future features
   // like overlapping audio playback or other advanced features.
   if (previousState != OVERLAP_STOP) {
-      previousState = OVERLAP_STOP;
+    startTime = millis();
+    previousState = OVERLAP_STOP;
   }
-  
-  currentState = IDLE;
+
+  led_overlap_stop();
+
+  // change state after 2 seconds
+  if (millis() - startTime >= 2000) {
+    currentState = IDLE;
+  }
 }
 
 void loop() {
@@ -286,4 +330,200 @@ void loop() {
   }
 
   delay(10);
+}
+
+void led_boot() {
+  static unsigned long lastUpdate = 0;
+  static int startHue = 0;
+
+  const unsigned long updateInterval = 20;  // Controls speed
+  const int hueStep = 3;                    // Controls swirl speed
+  const int brightnessLimit = 30;           // Max brightness (0–255)
+
+  unsigned long now = millis();
+  if (now - lastUpdate >= updateInterval) {
+    lastUpdate = now;
+
+    for (int i = 0; i < N_LEDs; i++) {
+      int hue = (startHue + (i * 256 / N_LEDs)) % 256;
+      uint32_t color = strip.gamma32(strip.ColorHSV(hue * 256));  // 16-bit HSV to RGB with gamma correction
+
+      // Scale brightness down
+      uint8_t r = (uint8_t)((uint32_t)(color >> 16) & 0xFF) * brightnessLimit / 255;
+      uint8_t g = (uint8_t)((uint32_t)(color >> 8) & 0xFF) * brightnessLimit / 255;
+      uint8_t b = (uint8_t)((uint32_t)color & 0xFF) * brightnessLimit / 255;
+
+      strip.setPixelColor(i, r, g, b);
+    }
+
+    strip.show();
+    startHue = (startHue + hueStep) % 256;
+  }
+}
+
+void led_idle() {
+static unsigned long lastUpdate = 0;
+  static float angle = 0.0;
+
+  const float maxBrightness = 0.05;        // 5% of full brightness
+  const float gamma = 2.8;
+  const float breathingSpeed = 0.02;       // Smaller = slower breathing
+  const unsigned long updateInterval = 15; // ms between updates
+
+  unsigned long now = millis();
+  if (now - lastUpdate >= updateInterval) {
+    lastUpdate = now;
+
+    float raw = (sin(angle) + 1.0) / 2.0;         // 0.0 to 1.0
+    float adjusted = pow(raw, gamma);            // gamma correction
+    int brightness = adjusted * 255 * maxBrightness;
+
+    for (int i = 0; i < N_LEDs; i++) {
+      strip.setPixelColor(i, strip.Color(brightness, brightness, brightness)); // breathing white
+    }
+    strip.show();
+
+    angle += breathingSpeed;
+    if (angle >= TWO_PI) angle -= TWO_PI;
+  }
+}
+
+void led_wait_for_audio_length() {
+  static unsigned long lastUpdate = 0;
+  static float angle = 0.0;
+  static int dotIndex = 0;
+
+  const float pulseSpeed = 0.05;
+  const float maxPulseBrightness = 0.05;
+  const float tailFade = 0.5;
+  const unsigned long updateInterval = 20;
+
+  unsigned long now = millis();
+  if (now - lastUpdate >= updateInterval) {
+    lastUpdate = now;
+
+    // Pulsating base brightness
+    float pulse = (sin(angle) + 1.0) / 2.0;
+    float pulseCorrected = pow(pulse, 2.8);
+    int baseBrightness = pulseCorrected * 255 * maxPulseBrightness;
+
+    // Draw base ring
+    for (int i = 0; i < N_LEDs; i++) {
+      strip.setPixelColor(i, strip.Color(0, baseBrightness, 0));
+    }
+
+    // Rotating brighter dot with tail
+    for (int t = 0; t < 3; t++) {
+      int index = (dotIndex - t + N_LEDs) % N_LEDs;
+      float tailFactor = pow(tailFade, t);
+      int tailBrightness = baseBrightness + (100 * tailFactor);
+      if (tailBrightness > 255) tailBrightness = 255;
+      strip.setPixelColor(index, strip.Color(0, tailBrightness, 0));
+    }
+
+    strip.show();
+
+    dotIndex = (dotIndex + 1) % N_LEDs;
+    angle += pulseSpeed;
+    if (angle >= TWO_PI) angle -= TWO_PI;
+  }
+}
+
+void led_playing() {
+  static unsigned long lastUpdate = 0;
+  static float angle = 0.0;
+
+  const float pulseSpeed = 0.08;
+  const float maxPulseBrightness = 0.1;
+  const unsigned long updateInterval = 20;
+
+  unsigned long now = millis();
+  if (now - lastUpdate >= updateInterval) {
+    lastUpdate = now;
+
+    // Progress tracker
+    unsigned long elapsed = millis() - startTime;
+    float progress = fmin((float)elapsed / AudioLength, 1.0);
+    int ledsToLight = (1.0 - progress) * N_LEDs;
+
+    // Pulse effect
+    float pulse = (sin(angle) + 1.0) / 2.0;
+    float pulseCorrected = pow(pulse, 2.8);
+    int baseBrightness = pulseCorrected * 255 * maxPulseBrightness;
+
+    for (int i = 0; i < N_LEDs; i++) {
+      if (i < ledsToLight) {
+        strip.setPixelColor(i, strip.Color(0, 0, baseBrightness));
+      } else {
+        strip.setPixelColor(i, 0); // turn off
+      }
+    }
+
+    strip.show();
+    angle += pulseSpeed;
+    if (angle >= TWO_PI) angle -= TWO_PI;
+  }
+}
+
+// Helper to set pulsating rotating dot with tail in any color
+void led_pulsating_tail(uint8_t rBase, uint8_t gBase, uint8_t bBase) {
+  static unsigned long lastUpdate = 0;
+  static int dotIndex = 0;
+  static float breathAngle = 0;
+
+  const unsigned long updateInterval = 20;
+  const float pulseSpeed = 0.05;
+  const float maxPulseBrightness = 0.05;
+  const float tailFade = 0.5;  // brightness reduction factor per tail LED
+  const int tailLength = 3;
+
+  unsigned long now = millis();
+  if (now - lastUpdate >= updateInterval) {
+    lastUpdate = now;
+
+    // Base pulsating brightness (0 to 1)
+    float pulse = (sin(breathAngle) + 1.0) / 2.0;
+    float pulseCorrected = pow(pulse, 2.8);
+    float baseBrightnessFactor = pulseCorrected * maxPulseBrightness;
+
+    // Draw base ring with pulsating brightness
+    for (int i = 0; i < N_LEDs; i++) {
+      uint8_t r = rBase * baseBrightnessFactor;
+      uint8_t g = gBase * baseBrightnessFactor;
+      uint8_t b = bBase * baseBrightnessFactor;
+      strip.setPixelColor(i, r, g, b);
+    }
+
+    // Draw brighter rotating dot and tail
+    for (int t = 0; t < tailLength; t++) {
+      int idx = (dotIndex - t + N_LEDs) % N_LEDs;
+      float tailBrightnessFactor = pow(tailFade, t);
+      // Brighter dot and fading tail, capped at 255
+      uint8_t r = min(255, (int)(rBase * 4 * tailBrightnessFactor));
+      uint8_t g = min(255, (int)(gBase * 4 * tailBrightnessFactor));
+      uint8_t b = min(255, (int)(bBase * 4 * tailBrightnessFactor));
+      strip.setPixelColor(idx, r, g, b);
+    }
+
+    strip.show();
+
+    dotIndex = (dotIndex + 1) % N_LEDs;
+    breathAngle += pulseSpeed;
+    if (breathAngle >= TWO_PI) breathAngle -= TWO_PI;
+  }
+}
+
+void led_manual_stop() {
+  // Orange color base (R, G, B)
+  led_pulsating_tail(255, 100, 0);
+}
+
+void led_automatic_stop() {
+  // Blue color base
+  led_pulsating_tail(0, 0, 255);
+}
+
+void led_overlap_stop() {
+  // White color base
+  led_pulsating_tail(255, 255, 255);
 }

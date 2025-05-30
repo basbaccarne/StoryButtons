@@ -7,7 +7,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-const int ledPin = 1; // led data on D1
+const int ledPin = 2; // led data on D1
 const int N_LEDs = 16;
 
 // configure neopixel strip
