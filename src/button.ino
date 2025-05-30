@@ -251,9 +251,9 @@ void manual_stop_sequence() {
   }
 
    led_manual_stop();
-   
-    // change state after 2 seconds
-  if (millis() - startTime >= 2000) {
+
+    // change state after 1 second
+  if (millis() - startTime >= 1000) {
     currentState = IDLE;
   }
 }
@@ -272,8 +272,8 @@ void automatic_stop_sequence() {
   }
 
   led_automatic_stop();
-    // change state after 2 seconds
-  if (millis() - startTime >= 2000) {
+    // change state after 1 second
+  if (millis() - startTime >= 1000) {
     currentState = IDLE;
   }
 }
@@ -289,8 +289,8 @@ void overlap_stop_sequence() {
 
   led_overlap_stop();
 
-  // change state after 2 seconds
-  if (millis() - startTime >= 2000) {
+  // change state after 1 seond
+  if (millis() - startTime >= 1000) {
     currentState = IDLE;
   }
 }
