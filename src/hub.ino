@@ -70,6 +70,7 @@ volatile int ReceivedButtonID = 0;
 volatile bool newButtonData = false;
 int previousButtonID = 0;
 uint8_t lastSenderMac[6];
+uint8_t penultimateSenderMac[6];
 
 // Variable to store the audio length
 unsigned long audioLength = 0;
@@ -83,6 +84,7 @@ DFRobotDFPlayerMini myDFPlayer;
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   // on valid message
   if (len == sizeof(int)) {
+    memcpy(penultimateSenderMac, lastSenderMac, 6);
     memcpy((void *)&ReceivedButtonID, data, sizeof(int));
     memcpy(lastSenderMac, info->src_addr, 6);
     newButtonData = true;
@@ -157,24 +159,25 @@ void loop() {
       // if something was playing tell that device a new button ID was received
       if (busy) {
         int interruptCode = 0;
-        Serial.print("➡️ Sending interrupt code to previous sender.");
+        Serial.println("➡️ Sending interrupt code to previous sender.");
+        esp_now_send(penultimateSenderMac, (uint8_t *)&interruptCode, sizeof(interruptCode));
         delay(10);
 
+      } 
       // Get and send the duration of the selected track ...
-      } else {
-        audioLength = tracks[ReceivedButtonID - 1].duration;
-        Serial.printf("➡️ Sending back audio length: %d ms\n", audioLength);
-        esp_now_send(lastSenderMac, (uint8_t *)&audioLength, sizeof(audioLength));
-        delay(10);
+      audioLength = tracks[ReceivedButtonID - 1].duration;
+      Serial.printf("➡️ Sending back audio length: %d ms\n", audioLength);
+      esp_now_send(lastSenderMac, (uint8_t *)&audioLength, sizeof(audioLength));
+      delay(10);
 
-        // .. and play the track
-        Serial.print("▶️ Starting track ");
-        Serial.print(tracks[ReceivedButtonID - 1].number);
-        Serial.print(" - ");
-        Serial.println(tracks[ReceivedButtonID - 1].name);
-        myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
-        Serial.println("");
-      }
+      // .. and play the track
+      Serial.print("▶️ Starting track ");
+      Serial.print(tracks[ReceivedButtonID - 1].number);
+      Serial.print(" - ");
+      Serial.println(tracks[ReceivedButtonID - 1].name);
+      myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
+      Serial.println("");
+      
     }
     // if the ID is out of range
     else {

@@ -152,6 +152,7 @@ void wait_for_audio_length_sequence() {
     sent = false;
 
     if (AudioLength <= 0) {
+      Serial.println();
       Serial.println("⬅️ Another button took over. Switching to OVERLAP_STOP.");
       currentState = OVERLAP_STOP;
     } else {
@@ -194,18 +195,21 @@ void playing_sequence(int buttonPushed) {
     started = false;
     return;
   }
-  // Interrupt by another button
-  if (AudioLength <= 0) {
-      Serial.println("⬅️ Another button took over. Switching to OVERLAP_STOP.");
-      currentState = OVERLAP_STOP;
-  }
 
   // Automatic stop
-  if (millis() - startTime >= AudioLength) {
+  if (millis() - startTime >= AudioLength && AudioLength != 0) {
     currentState = AUTOMATIC_STOP;
     Serial.println();
     Serial.println("🛑 Audio finished playing, changing to AUTOMATIC_STOP state...");
     started = false;
+  }
+
+  // Interrupt by another button
+  if (AudioLength <= 0) {
+      Serial.println();
+      Serial.println("⬅️ Another button took over.");
+      Serial.println("🔁 Switching to OVERLAP_STOP.");
+      currentState = OVERLAP_STOP;
   }
 }
 
@@ -241,10 +245,7 @@ void overlap_stop_sequence() {
   // This state is not used in this implementation, but can be used for future features
   // like overlapping audio playback or other advanced features.
   if (previousState != OVERLAP_STOP) {
-    Serial.println();
-    Serial.println("🛑 Another button started to play");
-    Serial.println("🔁 changing button to IDLE state...");
-    previousState = OVERLAP_STOP;
+      previousState = OVERLAP_STOP;
   }
   
   currentState = IDLE;
