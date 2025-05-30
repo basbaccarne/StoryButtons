@@ -33,7 +33,7 @@ GND (from PSU)
 // the folder name needs to be "MP3", placed under the SD card "root" directory
 // change the contents of the struct Track to match your audio files
 
-// Source: https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/examples/GetStarted/GetStarted.ino 
+// Source: https://github.com/DFRobot/DFRobotDFPlayerMini/blob/master/examples/GetStarted/GetStarted.ino
 
 // Libraries
 #include "DFRobotDFPlayerMini.h"
@@ -43,65 +43,49 @@ GND (from PSU)
 // Struct to hold track information
 struct Track {
   uint8_t number;
-  const char* name;
+  const char *name;
   unsigned long duration;
 };
 
 // Metadata for the audio tracks (id, name, duration in ms)
 const Track tracks[] = {
-  {1, "HAL 9000",    16*1000},
-  {2, "Sauruman",    28*1000},
-  {3, "Dobby",       10*1000}
+  { 1, "HAL 9000", 16 * 1000 },
+  { 2, "Sauruman", 28 * 1000 },
+  { 3, "Dobby", 10 * 1000 }
 };
 const uint8_t numTracks = sizeof(tracks) / sizeof(tracks[0]);
 
+// pins
+const int busyPin = 2;
+const int ledPin = 8;
+
 // ESP-NOW peer addresses (MAC addresses of the buttons - see "mac.ino" for details)
-uint8_t button1_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74};
-// uint8_t button2_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x75};
+uint8_t button1_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74 };
+uint8_t button2_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 };
 // uint8_t button3_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x76};
 // uint8_t button4_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x77};
 
-// Variable to store the received button ID
-int ReceivedButtonID = 0; 
+// Variables to store the received button ID & sender IDs
+volatile int ReceivedButtonID = 0;
+volatile bool newButtonData = false;
+int previousButtonID = 0;
+uint8_t lastSenderMac[6];
 
 // Variable to store the audio length
 unsigned long audioLength = 0;
 
 // create a HardwareSerial object for the DFPlayer (the XIAO way)
-HardwareSerial DFSerial(1); 
+HardwareSerial DFSerial(1);
 DFRobotDFPlayerMini myDFPlayer;
 
-// This function is called when data is received from a button 
+// This function is called when data is received from a button
 // (works like an interrupt handler)
-
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   // on valid message
   if (len == sizeof(int)) {
-    memcpy((void*)&ReceivedButtonID, data, sizeof(int));
-    Serial.print("Received press from button ID: ");
-    Serial.println(ReceivedButtonID);
-    delay(10);
-
-    // check if the received button ID is valid
-    if (ReceivedButtonID == 0) {
-      Serial.println("■ Stopping playback ...");
-      myDFPlayer.stop();
-      delay(200); 
-    }
-    else if (ReceivedButtonID > 0 && ReceivedButtonID <= numTracks) {
-        audioLength = tracks[ReceivedButtonID - 1].duration; // Get the duration of the selected track
-        Serial.printf("Sending back audio length: %d ms\n", audioLength);
-        esp_now_send(info->src_addr, (uint8_t *)&audioLength, sizeof(audioLength));
-        delay(10);
-        Serial.print("➤ Starting track ");
-        Serial.print(tracks[ReceivedButtonID - 1].number);
-        Serial.print(" - ");
-        Serial.println(tracks[ReceivedButtonID - 1].name);
-        myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
-    }  
-    else {
-        Serial.println("Invalid button ID. Ignoring...");
-    }
+    memcpy((void *)&ReceivedButtonID, data, sizeof(int));
+    memcpy(lastSenderMac, info->src_addr, 6);
+    newButtonData = true;
   }
 }
 
@@ -118,18 +102,21 @@ void addPeer(uint8_t *mac) {
   }
 }
 
-void setup()
-{
+void setup() {
   // initialize both Serial communications
   // TX = GPIO43 (D6), RX = GPIO44 (D7)
   DFSerial.begin(9600, SERIAL_8N1, 44, 43);
   Serial.begin(115200);
 
+  // set status pin as input with pull-up resistor
+  pinMode(busyPin, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);
+
   // Open the SD card stream
   myDFPlayer.begin(DFSerial);
   delay(10);
   // Set volume value. From 0 to 30
-  myDFPlayer.volume(10);  
+  myDFPlayer.volume(10);
 
   // initiatlize ESP-NOW
   WiFi.mode(WIFI_STA);
@@ -137,14 +124,63 @@ void setup()
   delay(100);
   esp_now_init();
   esp_now_register_recv_cb(OnDataRecv);
-  
+
   addPeer(button1_mac);
-  // addPeer(button2_mac);
+  addPeer(button2_mac);
   // addPeer(button3_mac);
   // addPeer(button4_mac);
 
-  Serial.println("Receiver ready");
-
+  Serial.println("✅ Listening hub ready");
+  Serial.println();
 }
 
-void loop(){delay(100);}
+void loop() {
+  bool busy = !digitalRead(busyPin);
+  digitalWrite(ledPin, busy);
+
+  // reaction on incoming data
+  if (newButtonData) {
+    Serial.print("⬅️ Received button ID: ");
+    Serial.println(ReceivedButtonID);
+    
+    // If the received button ID is 0, stop playback
+    if (ReceivedButtonID == 0) {
+      Serial.println("🛑 Stopping playback ...");
+      Serial.println("");
+      myDFPlayer.stop();
+      delay(100);
+    }
+
+    // If the ID is within valid range
+    else if (ReceivedButtonID > 0 && ReceivedButtonID <= numTracks) {
+
+      // if something was playing tell that device a new button ID was received
+      if (busy) {
+        int interruptCode = 0;
+        Serial.print("➡️ Sending interrupt code to previous sender.");
+        delay(10);
+
+      // Get and send the duration of the selected track ...
+      } else {
+        audioLength = tracks[ReceivedButtonID - 1].duration;
+        Serial.printf("➡️ Sending back audio length: %d ms\n", audioLength);
+        esp_now_send(lastSenderMac, (uint8_t *)&audioLength, sizeof(audioLength));
+        delay(10);
+
+        // .. and play the track
+        Serial.print("▶️ Starting track ");
+        Serial.print(tracks[ReceivedButtonID - 1].number);
+        Serial.print(" - ");
+        Serial.println(tracks[ReceivedButtonID - 1].name);
+        myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
+        Serial.println("");
+      }
+    }
+    // if the ID is out of range
+    else {
+      Serial.println("❌ Invalid button ID received. Ignoring...");
+    }
+    newButtonData = false;  // Reset the flag
+  }
+  delay(100);
+}

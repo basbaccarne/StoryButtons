@@ -16,7 +16,7 @@
 #include <WiFi.h>
 
 // SETTINGS
-int button_ID = 1;
+int button_ID = 2;
 
 // ESP-NEW identification of hub
 uint8_t hub_mac[] = { 0x48, 0x27, 0xE2, 0xE7, 0x1B, 0xF4 };
@@ -27,7 +27,7 @@ const int buttonPin = 2;
 const int ledPin = 3;
 
 // variables to audio length in milliseconds
-volatile int AudioLength = 10000;
+volatile unsigned long AudioLength = 10000;
 volatile bool newAudioData = false;
 unsigned long startTime = 0;
 
@@ -38,9 +38,11 @@ bool canBepushed = false;
 enum ButtonState {
   BOOT,
   IDLE,
+  WAIT_FOR_AUDIO_LENGTH,
   PLAYING,
   MANUAL_STOP,
-  AUTOMATIC_STOP
+  AUTOMATIC_STOP,
+  OVERLAP_STOP
 };
 ButtonState currentState = BOOT;
 ButtonState previousState = IDLE;
@@ -48,8 +50,8 @@ ButtonState previousState = IDLE;
 // Function to handle incoming data (store audio length in AudioLength)
 // This function is called when data is received from the hub (like an interrupt handler)
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
-  if (len == sizeof(int)) {
-    memcpy((void*)&AudioLength, data, sizeof(int));
+  if (len == sizeof(unsigned long)) {
+    memcpy((void *)&AudioLength, data, sizeof(unsigned long));
     newAudioData = true;
   }
 }
@@ -62,7 +64,10 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   delay(100);
-  esp_now_init();
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+  while (true) delay(1000);
+  }
 
   // Initialize ESP-NOW to send data
   esp_now_peer_info_t peerInfo = {};
@@ -83,120 +88,173 @@ void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
 
-  Serial.println("Button sender ready");
+  Serial.print("✅ Button sender ready. ");
+  Serial.print("Button [[");
+  Serial.print(button_ID);
+  Serial.println("]] at your service!");
+  Serial.println();
 }
 
 void boot_sequence() {
-  if(previousState != BOOT){
+  if (previousState != BOOT) {
     // start timer
     startTime = millis();
-    Serial.println("Entering BOOT mode ...");
+    Serial.println("🔁 Entering BOOT mode ...");
     previousState = BOOT;
   }
   digitalWrite(ledPin, HIGH);
 
   // change state after 1 second
-  if(millis() - startTime >= 1000){
+  if (millis() - startTime >= 1000) {
     currentState = IDLE;
-    Serial.println("Entering IDLE mode ...");
   }
 }
 
 void idle_sequence(bool buttonPushed) {
-  if(previousState != IDLE){
+  if (previousState != IDLE) {
     // debounce
     delay(10);
+    Serial.println();
+    Serial.println("🔁 Entering IDLE mode ...");
+    Serial.println();
     previousState = IDLE;
   }
   digitalWrite(ledPin, HIGH);
-  if(buttonPushed == HIGH){
-      canBepushed = true;
+  if (buttonPushed == HIGH) {
+    canBepushed = true;
   }
-  if(buttonPushed == LOW && canBepushed) {
-    currentState = PLAYING;
-    Serial.println("Button pressed, changing to PLAYING state...");
+  if (buttonPushed == LOW && canBepushed) {
+    currentState = WAIT_FOR_AUDIO_LENGTH;
+    Serial.println("🔘 Button pressed.");
     canBepushed = false;
   }
 }
 
-void playing_sequence(int buttonPushed, int AudioLength) {
-  // only once
-  if(previousState != PLAYING){
-    // debounce
-    delay(10);
-    // start timer
-    startTime = millis();
-    // send the button ID to the hub
+void wait_for_audio_length_sequence() {
+  static bool sent = false;
+
+  if (!sent) {
+    delay(10);  // debounce
     esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&button_ID, sizeof(button_ID));
     if (result == ESP_OK) {
-        Serial.printf("Sent button ID: %d\n", button_ID);
-      } else {
-        Serial.printf("Send error: %d\n", result);
-      }
-    previousState = PLAYING;
+      Serial.printf("➡️ Sent button ID: %d\n", button_ID);
+    } else {
+      Serial.printf("❌ Send error: %d\n", result);
+    }
+    sent = true;
+    startTime = millis();  // start timeout
   }
 
-  // play loop
-  digitalWrite(ledPin, HIGH);
-  // receive the audio length from the hub
+  // If new audio data received
   if (newAudioData) {
-    Serial.printf("Received audio length: %d ms\n", AudioLength);
+    Serial.printf("⬅️ Received audio length: %d ms\n", AudioLength);
     newAudioData = false;
+    sent = false;
+
+    if (AudioLength <= 0) {
+      Serial.println("⬅️ Another button took over. Switching to OVERLAP_STOP.");
+      currentState = OVERLAP_STOP;
+    } else {
+      currentState = PLAYING;
     }
-  
-  // If button is pressed, stop the audio manually
-  if(buttonPushed == HIGH){
-    // start detecting a new push only when the button has been released
+  }
+
+  // Timeout fallback
+  if (millis() - startTime >= 1000) {
+    Serial.println("❌ Timeout waiting for audio length! Defaulting to 10s...");
+    AudioLength = 10000;
+    newAudioData = false;
+    sent = false;
+    currentState = PLAYING;
+  }
+}
+
+void playing_sequence(int buttonPushed) {
+  // only once
+  static bool started = false;
+
+  if (!started) {
+    startTime = millis();
+    previousState = PLAYING;
+    started = true;
+  }
+
+  digitalWrite(ledPin, HIGH);
+
+  // Manual stop
+  if (buttonPushed == HIGH) {
     canBepushed = true;
   }
-  if(buttonPushed == LOW && canBepushed){
+  if (buttonPushed == LOW && canBepushed) {
     currentState = MANUAL_STOP;
-    Serial.println("Button pressed, changing to MANUAL_STOP state...");
+    Serial.println();
+    Serial.println("🔘 Button pressed, changing to MANUAL_STOP state...");
     digitalWrite(ledPin, LOW);
     canBepushed = false;
-  } else {
-    if(millis() - startTime >= AudioLength) {
-      currentState = AUTOMATIC_STOP;
-      Serial.println("Audio finished playing, changing to AUTOMATIC_STOP state...");
-    }
+    started = false;
+    return;
+  }
+  // Interrupt by another button
+  if (AudioLength <= 0) {
+      Serial.println("⬅️ Another button took over. Switching to OVERLAP_STOP.");
+      currentState = OVERLAP_STOP;
+  }
+
+  // Automatic stop
+  if (millis() - startTime >= AudioLength) {
+    currentState = AUTOMATIC_STOP;
+    Serial.println();
+    Serial.println("🛑 Audio finished playing, changing to AUTOMATIC_STOP state...");
+    started = false;
   }
 }
 
 void manual_stop_sequence() {
-  if(previousState != MANUAL_STOP){
+  if (previousState != MANUAL_STOP) {
     esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&stopCode, sizeof(stopCode));
     if (result == ESP_OK) {
-      Serial.printf("Sent stop code: %d\n", stopCode);
+      Serial.printf("➡️ Sent stop code: %d\n", stopCode);
     } else {
-      Serial.printf("Send error: %d\n", result);
+      Serial.printf("❌ Send error: %d\n", result);    
     }
     previousState = MANUAL_STOP;
   }
   digitalWrite(ledPin, LOW);
-  Serial.println("Audio stopped manually, changing to IDLE state...");
-  currentState = IDLE; 
+  currentState = IDLE;
 }
 
 void automatic_stop_sequence() {
-  if(previousState != AUTOMATIC_STOP){
+  if (previousState != AUTOMATIC_STOP) {
     esp_err_t result = esp_now_send(hub_mac, (uint8_t *)&stopCode, sizeof(stopCode));
     if (result == ESP_OK) {
-      Serial.printf("Sent stop code: %d\n", stopCode);
+      Serial.printf("➡️ Sent stop code: %d\n", stopCode);
     } else {
-      Serial.printf("Send error: %d\n", result);
+      Serial.printf("❌ Send error: %d\n", result);
     }
     previousState = AUTOMATIC_STOP;
   }
   digitalWrite(ledPin, LOW);
-  Serial.println("Audio stopped automatically, changing to IDLE state...");
-  currentState = IDLE; 
+  currentState = IDLE;
+}
+
+void overlap_stop_sequence() {
+  // This state is not used in this implementation, but can be used for future features
+  // like overlapping audio playback or other advanced features.
+  if (previousState != OVERLAP_STOP) {
+    Serial.println();
+    Serial.println("🛑 Another button started to play");
+    Serial.println("🔁 changing button to IDLE state...");
+    previousState = OVERLAP_STOP;
+  }
+  
+  currentState = IDLE;
 }
 
 void loop() {
 
   int buttonPushed = digitalRead(buttonPin);
 
-  switch(currentState) {
+  switch (currentState) {
     case BOOT:
       boot_sequence();
       break;
@@ -205,16 +263,24 @@ void loop() {
       idle_sequence(buttonPushed);
       break;
 
+    case WAIT_FOR_AUDIO_LENGTH:
+      wait_for_audio_length_sequence();
+      break;
+
     case PLAYING:
-      playing_sequence(buttonPushed, AudioLength);
+      playing_sequence(buttonPushed);
       break;
 
     case MANUAL_STOP:
       manual_stop_sequence();
       break;
-      
+
     case AUTOMATIC_STOP:
       automatic_stop_sequence();
+      break;
+
+    case OVERLAP_STOP:
+      overlap_stop_sequence();
       break;
   }
 
