@@ -9,8 +9,8 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 **Independent push buttons**
   * One button per invention (as many as you want), each powered by 5V.
   * When pushed, they send their ID to the hub that answers with the length of the associated audio file (over ESP-NOW).
-  * As long as pushed a led ring counts down depending on the audio duration.
-  * When released, the button sends a signal to the hub to stop the audio.
+  * A second push while playing stops the audio
+  * Other buttons can interupt
 
 **Listen hub**
   * Single hub (or multiple if you want them on multiple places), powered by 5V.
@@ -106,13 +106,6 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 * [step 3 - listen to response and answer when message received (device MAC D8:3B:DA:73:C4:58)](tests/device2.ino)
 * [Play sound ID based on ESP-NOW signal](tests/targetted_audio.ino) from a [button](tests/button_espnow.ino)
 
-## Actions
-- [ ] Assemble button
-- [ ] Soft fade led ring
-- [ ] Mounting system button
-- [ ] Technical test listen hub
-- [ ] Concept listen hub
-- [ ] Buy final components
 
 ## Background
 ### Create a custom PCB
