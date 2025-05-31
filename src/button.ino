@@ -430,40 +430,22 @@ void led_wait_for_audio_length() {
 }
 
 void led_playing() {
-  static unsigned long lastUpdate = 0;
-  static float angle = 0.0;
+  unsigned long elapsed = millis() - startTime;
+  float progress = fmin((float)elapsed / AudioLength, 1.0);
+  int ledsToLight = (1.0 - progress) * N_LEDs;
 
-  const float pulseSpeed = 0.08;
-  const float maxPulseBrightness = 0.1;
-  const unsigned long updateInterval = 20;
-
-  unsigned long now = millis();
-  if (now - lastUpdate >= updateInterval) {
-    lastUpdate = now;
-
-    // Progress tracker
-    unsigned long elapsed = millis() - startTime;
-    float progress = fmin((float)elapsed / AudioLength, 1.0);
-    int ledsToLight = (1.0 - progress) * N_LEDs;
-
-    // Pulse effect
-    float pulse = (sin(angle) + 1.0) / 2.0;
-    float pulseCorrected = pow(pulse, 2.8);
-    int baseBrightness = pulseCorrected * 255 * maxPulseBrightness;
-
-    for (int i = 0; i < N_LEDs; i++) {
-      if (i < ledsToLight) {
-        strip.setPixelColor(i, strip.Color(0, 0, baseBrightness));
-      } else {
-        strip.setPixelColor(i, 0); // turn off
-      }
+  for (int i = 0; i < N_LEDs; i++) {
+    if (i < ledsToLight) {
+      // Solid blue color at full brightness
+      strip.setPixelColor(i, strip.Color(0, 0, 50));
+    } else {
+      strip.setPixelColor(i, 0); // turn off
     }
-
-    strip.show();
-    angle += pulseSpeed;
-    if (angle >= TWO_PI) angle -= TWO_PI;
   }
+
+  strip.show();
 }
+
 
 // Helper to set pulsating rotating dot with tail in any color
 void led_pulsating_tail(uint8_t rBase, uint8_t gBase, uint8_t bBase) {

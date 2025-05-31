@@ -22,30 +22,39 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | Part     | Link    | Cost   | Amount  |
 | -------- | ------- |------- | ------- |
 | **Independent Push Buttons** (N=4)|
-|  XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 4 |
-|  Stainless steel button | [Conrad](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html?searchType=SearchRedirect)          | €7 | 4 |
-| LED ring | [Adafruit](https://www.adafruit.com/product/1463) | €16 | 4 |
-| Diode | [Digikey](https://www.digikey.be/en/products/detail/stmicroelectronics/1N5819/1037326)| €0.3 | 4 |
-| DC Barrel jack connector | [Digikey](https://www.digikey.be/en/products/detail/schurter-inc/4840-2201/2644239) | €3| 4 |
-| Acryl sheet | [kunstofplaten](https://kunststofplaten.be/) (experiment)| | |
-| 5V power adapter | [Digikey](https://www.digikey.be/en/products/filter/ac-dc-desktop-wall-power-adapters/130)| €6 | 1 | 
-| Female DC barrel connection PCB | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | €1.5 | 1 |
-| Male DC barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | €2 | 4 |
-| Custom PCB (N=5) | [JLCPCB](https://jlcpcb.com/) | €30 |  1 |
-| M3 x 4 x 5 threaded inserts | [bol.com (n=20)](https://www.bol.com/be/nl/p/a4-zakken-met-klep-en-hersluitbare-kleefstrip-21cm-x-28cm-10-stuks/9300000023960213/?cid=1748443406870-9935155426064&bltgh=r6bKVrFF-khjU55WRmNDwA.4_39.48.ProductTitle) | €11 | 1 |
-| Stand-offs | | | |
-| M3 screws | | | |
-| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 8 |
-| Power wires (flexible) | |||
-| Cable manager/guide |  
-| Adhesive Cable Tie Mounts |
+||
+|  XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | $30,40 | 4 |
+|  Stainless steel button | [Conrad](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html?searchType=SearchRedirect)          | €33,95 | 4 |
+| LED ring | [Adafruit](https://www.adafruit.com/product/1463) | $47,80 | 4 |
+| Diode | [Digikey](https://www.digikey.be/en/products/detail/stmicroelectronics/1N5819/1037326)| $0,72 | 4 |
+| DC Barrel jack connector | [Digikey](https://www.digikey.be/en/products/detail/schurter-inc/4840-2201/2644239) | $12,00| 4 |
+| Acryl sheet | [kunstofplaten](https://kunststofplaten.be/) (experiment)| -- | -- |
+| Galaxy PLA | [Bambu](https://eu.store.bambulab.com/nl/products/pla-galaxy?srsltid=AfmBOoo9sBeG0sJasqFpaCiYi2BV-K_h8VwQ-q00EmTJZ01FLYhFAnA5) |-- | --|
+| 5V power adapter | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/WR9MA2000LCPMFR6B/8598279)| $9,26 | 1 | 
+| Female DC barrel connection PCB | [Digikey](https://www.digikey.be/en/products/detail/sparkfun-electronics/13126/17828120) | $1,25 | 1 |
+| Male DC barrel connections | [Digikey](https://www.digikey.be/en/products/detail/globtek-inc/V01-TWISTLOCK/16515756) | $7,68 | 4 |
+| Custom PCB | [JLCPCB (n=5)](https://jlcpcb.com/) | €30,00 |  1 |
+| Kapton tape | [Digikey](https://www.digikey.be/nl/products/detail/olimex-ltd/kapton-tape10mm/19204468) | $2,84| 1 |
+| M3x4x5 threaded inserts | [CNC Kitchen (n=100)](https://cnckitchen.store/products/made-for-voron-gewindeeinsatz-threaded-insert-m3x5x4-100-stk-pcs) | €10 | 1 |
+| Hex Standoffs M3X0.5 19mm | [Digikey](https://www.digikey.be/nl/products/detail/w%C3%BCrth-elektronik/971190321/6174653) | $7,35 | 1 |
+| M3x12 bolts | [Digikey](https://www.digikey.be/nl/products/detail/keystone-electronics/29314/1532209) | $5,51 | 1 |
+| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/sullins-connector-solutions/PPTC071LFBN-RC/810146)| $4,37 | 8 |
+| Adhesive Cable Tie Mounts | [Digikey](https://www.digikey.be/en/products/detail/phoenix-contact/3240707/4461932) | $1,42 | 1|
 | **Listen hub** |
-| XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | €10 | 1 |
-| DFPlayer Mini    | [DFRobot](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)      | €6 | 1 |
-| Female 3.5mm jack | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995) | €3 | 1 |
+||
+| breadboard |||
+| XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | $7,60 | 1 |
+| DFPlayer Mini    | [DFRobot](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299)      | $5,90 | 1 |
+| Female DC barrel to terminal | [Digikey](https://www.digikey.be/en/products/detail/pololu/2449/19529193) | $2,95 | 1 |
+| Terminal block | [Digikey](https://www.digikey.be/en/products/detail/on-shore-technology-inc/OSTVN02A150/1588862) | $1,74 | 1|
+| 5V power adapter | [Digikey](https://www.digikey.be/en/products/filter/ac-dc-desktop-wall-power-adapters/130)| $9,26 | 1 | 
+| Female 3.5mm jack (audio) | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995) | $0,71 | 1 |
 | Headphone | [JBL Wired](https://www.bol.com/be/nl/p/jbl-tune-500-on-ear-koptelefoon-zwart/9200000098045179/) | €26 | 1 |
-| Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/kycon-inc/STX-3000/9975995)| €0.5 | 2 | 
-| Header stack 8p | [Digikey](https://www.digikey.be/en/products/detail/sullins-connector-solutions/PPTC081LFBN-RC/810147)| €0.5 | 2 |  
+| Blue Led |--|--| 1 |
+| 150 Ω resistor | -- | -- | 1 |
+| 1kΩ resistor | --| -- | 1|
+| 10kΩ resistor | --| -- | 1|
+||  
 | **Total** |  | **** |
 
 ## Construction
