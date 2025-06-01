@@ -153,14 +153,14 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 #### Workflow
 This is my recommended workflow to create your own PCB (basic version)
-1. **Test**: Test circuit and code on a breadboard (with components you have laying around).
-2. **Parts**: Research the components you need (tip: note down part numbers). It's a good idea to order and test them first.
-3. **Place**: Open an easyEDA project, search and place your components (cfr part numbers) using in library module. Easy EDA has a lot of offical and user contributed parts. Crosscheck, or create your own where needed (see below)
-4. **Connect***: Wire your components together using their schamatic representation (Circruit design)
-5. **Position**: Position components on the two sides of the breadboard
-6. **refine**: Optimize wires (auto-routing usually does a good job) & add text
-7. **Export**: Export OBJ file for import in CAD (crosscheck & go back if corrections are needed).
-8. **Order**: EasyEDA allows direct orders on PCBWay. For a EU alternative: check [Eurocicruits](https://www.eurocircuits.com/).
+1. **``Test``**: Test circuit and code on a breadboard (with components you have laying around).
+2. **``Parts``**: Research the components you need (tip: note down part numbers). It's a good idea to order and test them first.
+3. **``Place``**: Open an easyEDA project, search and place your components (cfr part numbers) using in library module. Easy EDA has a lot of offical and user contributed parts. Crosscheck, or create your own where needed (see below)
+4. **``Connect``**: Wire your components together using their schamatic representation (Circruit design)
+5. **``Position``**: Position components on the two sides of the breadboard
+6. **``refine``**: Optimize wires (auto-routing usually does a good job) & add text
+7. **``Export``**: Export OBJ file for import in CAD (crosscheck & go back if corrections are needed).
+8. **``Order``**: EasyEDA allows direct orders on PCBWay. For a EU alternative: check [Eurocicruits](https://www.eurocircuits.com/).
 
 #### Parts
 When adding parts (rough notes)   
