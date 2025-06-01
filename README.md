@@ -29,7 +29,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 ## Parts and electronic components
 
 <details>
-  <summary><strong>🪛 Show the full list of parts</strong></summary>
+  <summary><strong>🪛 Show the full Bill of Materials</strong></summary>
 
 | Part     | Link    | Cost   | Amount  |
 | -------- | ------- |------- | ------- |
@@ -79,6 +79,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
     * 1mm perfect settings local laser: `power 50% - speed 0.8%`
 * The led ring holder, the sleeve and the bottom piece are 3D printed
   * 🧊 [Downloadable model in Fusion 360](https://a360.co/4kx6gfg)
+  * Use threaded inserts on the bottom of the ledring for mounting
 * With a custom PCB inside (see Parts list)
   <div align="left">  
   <img src="img/schematic.png" width="400">
@@ -89,15 +90,35 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   </div>
 
 ### 🎧 Listen Module
-* The listen module is integrated in a teddybear
-* Inside is a simple box with the components on a breadboard
+* Technical set-up:   
+  * Since we're only creating a single listening hub, we're building this one on a breadboard.    
+
+  * See parts list and schematic for the components and wiring.   
+  * A blue status led indicates if something is playing. The device is powered by 5V and has a 3.5mm audio jack for headphones.
+
+  * <div align="left">
+      <img src="img/schematic2.png" width="400">
+    </div>   
+
+* Physical set-up:
+  * We still need to define the final form factor.   
+
+  * The idea is to install this in a big teddybear
+  * Currently, eveything is integrated in this box (threaded inserts on the sides on the bottom components)
+    *  🧊 [Downloadable model in Fusion 360](https://a360.co/3ZGuyeM)
+
 
 ## Code
+- [ ] First retrieve the MAC-adresses of the buttons and hub using [this code](tests/mac.ino) and add this to the code (all buttons ids in the hub, hub in the buttons).   
+- [ ] Next, assign each button ID to the audio files on the SD card and change the metadata in the hub code. 
+- [ ] Then set the button ID for each button before oploading the code.   
 
-* [Code for the hub](src/hub.ino)
-* [Code for the button](src/button.ino)
+* 🎧⌨️ [Code for the button](src/button.ino)
+* 🔘⌨️ [Code for the hub](src/hub.ino)
 
 ## Tests
+> **_NOTE:_** This is the overview of tests and micro-experiments that are part of this project.   
+
 **Input** (touch - Button) 
 * Push: [Pull-up button](test/push.ino)
 * Touch: [Continuous reading of capacitive touch pads](tests/capacitive.ino)   
@@ -123,6 +144,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 
 ## Background
+> **_NOTE:_** This is section covers some research and background informatiion
 ### Create a custom PCB
 * For this case, I'm creating a custom PCB to illustrate the flow on a simple example
 * If you're new to this, it might be easer to work in [easyEDA](easyeda.com), then import the STEP file in you CAD program
