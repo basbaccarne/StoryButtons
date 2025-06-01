@@ -144,25 +144,27 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 
 ## Background
-> **_NOTE:_** This is section covers some research and background informatiion
+> **_NOTE:_** This is section covers some research and background information
 ### Create a custom PCB
 * For this case, I'm creating a custom PCB to illustrate the flow on a simple example
 * If you're new to this, it might be easer to work in [easyEDA](easyeda.com), then import the STEP file in you CAD program
-* [Good tutorial](https://www.youtube.com/watch?v=MsdJgEinb34&t=23s)
-* If tou want to step up your game: work with the intergrated PCB modules in CAD (eg. in Gerber is intergrated in Fusion)
+* ▶️ [Good tutorial](https://www.youtube.com/watch?v=MsdJgEinb34&t=23s)
+* If you want to step up your game: work with the intergrated PCB modules in CAD (eg. Fusion 360 has the Electronics workspace, which is built on the former Eagle PCB design tool Autodesk acquired). This is called `MCAD (mechanical-electrical co-design)` integration.
 
-**workflow**
-1. **test**: Test circuit and code on a breadboard
-2. **parts**: Research the components you need (tip: note down part numbers)
-3. **place**: Open an easyEDA project, search and place your components (cfr part numbers) using the library module
-4. **connect***: Wire your components together (circruit design)
-5. **position**: Position components on the two sides of the breadboard
-6. **refine**: Optimize wires & add text
-7. **Export**: Export step file for import in CAD (crosscheck & go back if corrections are needed)
-8. **Order**: EasyEDA allows direct orders on PCBWay
+#### Workflow
+This is my recommended workflow to create your own PCB (basic version)
+1. **Test**: Test circuit and code on a breadboard (with components you have laying around).
+2. **Parts**: Research the components you need (tip: note down part numbers). It's a good idea to order and test them first.
+3. **Place**: Open an easyEDA project, search and place your components (cfr part numbers) using in library module. Easy EDA has a lot of offical and user contributed parts. Crosscheck, or create your own where needed (see below)
+4. **Connect***: Wire your components together using their schamatic representation (Circruit design)
+5. **Position**: Position components on the two sides of the breadboard
+6. **refine**: Optimize wires (auto-routing usually does a good job) & add text
+7. **Export**: Export OBJ file for import in CAD (crosscheck & go back if corrections are needed).
+8. **Order**: EasyEDA allows direct orders on PCBWay. For a EU alternative: check [Eurocicruits](https://www.eurocircuits.com/).
 
-**parts**   
-When adding parts   
+#### Parts
+When adding parts (rough notes)   
+* SMD vs through hole
 * Part are built out of 3 components: (1) schematic (2) footprint (3) 3D model
 * Check if there is a version in the library (crosscheck foorptint)
 * If not: create your own schematic & footprint (start from [datasheet](https://www.schurter.com/en/datasheet/typ_4840.2201.pdf) and [available models](https://www.digikey.be/nl/models/2644239))
