@@ -20,7 +20,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * The audio can be listened to through headphones.
 
 
-  <div align="left">  
+  <div align="center">  
   </br>
   <img src="img\conceptual model.png" width="400">
   </div>  
@@ -81,10 +81,10 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * 🧊 [Downloadable model in Fusion 360](https://a360.co/4kx6gfg)
   * Use threaded inserts on the bottom of the ledring for mounting
 * With a custom PCB inside (see Parts list)
-  <div align="left">  
+  <div align="center">  
   <img src="img/schematic.png" width="400">
   </div>
-  <div align="left">  
+  <div align="center">  
   <img src="img/pcb.svg" width="200">
   <img src="img/pcb_model.png" width="200">
   </div>
@@ -96,9 +96,9 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * See parts list and schematic for the components and wiring.   
   * A blue status led indicates if something is playing. The device is powered by 5V and has a 3.5mm audio jack for headphones.
 
-  * <div align="left">
-      <img src="img/schematic2.png" width="400">
-    </div>   
+<div align="center">
+    <img src="img/schematic2.png" width="400">
+</div>   
 
 * Physical set-up:
   * We still need to define the final form factor.   
