@@ -132,6 +132,14 @@ void setup() {
   // addPeer(button3_mac);
   // addPeer(button4_mac);
 
+  // boot blink led
+  for (int i = 0; i < 5; i++) {
+  digitalWrite(ledPin, HIGH);
+  delay(100);
+  digitalWrite(ledPin, LOW);
+  delay(100);
+  }
+    
   Serial.println("✅ Listening hub ready");
   Serial.println();
 }
