@@ -6,6 +6,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 *Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Fran Burger & Stephanie Van Hove*
 
 ## Concept
+
 **Independent push buttons**
   * One button per invention (as many as you want), each powered by 5V.
   * When pushed, they send their ID to the hub that answers with the length of the associated audio file (over ESP-NOW).
@@ -18,7 +19,18 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
   * The audio can be listened to through headphones.
 
-## Parts list
+
+  <div align="left">  
+  </br>
+  <img src="img\conceptual model.png" width="400">
+  </div>  
+
+
+## Parts and electronic components
+
+<details>
+  <summary><strong>🪛 Show the full list of parts</strong></summary>
+
 | Part     | Link    | Cost   | Amount  |
 | -------- | ------- |------- | ------- |
 | **Independent Push Buttons** (N=4)|
@@ -54,26 +66,29 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | 150 Ω resistor | -- | -- | 1 |
 | 1kΩ resistor | --| -- | 1|
 | 10kΩ resistor | --| -- | 1|
-||  
-| **Total** |  | **** |
 
-## Construction
-**Button module**  
-* The top of the button is a lasercutted piece of acryl 
-  * 3mm perfect settings local laser: `power 65% - speed 0.6%`
-  * 1mm perfect settings local laset: `power 50% - speed 0.8%`
-* The ledring holder, sleeve and bottom are 3D printed
-  * [Downloadable model in Fusion](https://a360.co/4kx6gfg)
+</details>
+
+## Construction & wiring
+### 🔘 Button module  
+* The button is a stainless steel button   
+
+* The top of the module is a lasercutted piece of 3mm acryl
+  * `Interal note`
+    * 3mm perfect settings local laser: `power 65% - speed 0.6%`
+    * 1mm perfect settings local laser: `power 50% - speed 0.8%`
+* The led ring holder, the sleeve and the bottom piece are 3D printed
+  * 🧊 [Downloadable model in Fusion 360](https://a360.co/4kx6gfg)
 * With a custom PCB inside (see Parts list)
   <div align="left">  
-  <img src="img/schematic.png" width="600">
+  <img src="img/schematic.png" width="400">
   </div>
   <div align="left">  
-  <img src="img/pcb.svg" width="300">
-  <img src="img/pcb_model.png" width="300">
+  <img src="img/pcb.svg" width="200">
+  <img src="img/pcb_model.png" width="200">
   </div>
 
-**Listen Module**
+### 🎧 Listen Module
 * The listen module is integrated in a teddybear
 * Inside is a simple box with the components on a breadboard
 
