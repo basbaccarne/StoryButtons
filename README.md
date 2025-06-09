@@ -49,7 +49,8 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 | Kapton tape | [Digikey](https://www.digikey.be/nl/products/detail/olimex-ltd/kapton-tape10mm/19204468) | $2,84| 1 |
 | M3x4x5 threaded inserts | [CNC Kitchen (n=100)](https://cnckitchen.store/products/made-for-voron-gewindeeinsatz-threaded-insert-m3x5x4-100-stk-pcs) | €10 | 1 |
 | Hex Standoffs M3X0.5 19mm | [Digikey](https://www.digikey.be/nl/products/detail/w%C3%BCrth-elektronik/971190321/6174653) | $7,35 | 1 |
-| M3x12 bolts | [Digikey](https://www.digikey.be/nl/products/detail/keystone-electronics/29314/1532209) | $5,51 | 1 |
+| Hex Standoffs M3X0.5 19mm | [Digikey](https://www.digikey.be/nl/products/detail/w%C3%BCrth-elektronik/971190321/6174653) | $7,35 | 1 |
+| M3x4 bolts | [Digikey](https://www.digikey.be/nl/products/detail/keystone-electronics/29314/1532209) | $5,51 | 1 |
 | Header stack 7p | [Digikey](https://www.digikey.be/en/products/detail/sullins-connector-solutions/PPTC071LFBN-RC/810146)| $4,37 | 8 |
 | Adhesive Cable Tie Mounts | [Digikey](https://www.digikey.be/en/products/detail/phoenix-contact/3240707/4461932) | $1,42 | 1|
 | **Listen hub** |
@@ -115,7 +116,7 @@ First retrieve the MAC-adresses of the buttons and hub using [this code](tests/m
 * 🎧⌨️ [Code for the button](src/button.ino) 
 * 🔘⌨️ [Code for the hub](src/hub.ino)   
 </br>   
-* 🎙️🔗[Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)   
+* 🎙️🔗 [Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)   
 
 </br>   
 
