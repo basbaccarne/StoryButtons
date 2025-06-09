@@ -49,9 +49,10 @@ struct Track {
 
 // Metadata for the audio tracks (id, name, duration in ms)
 const Track tracks[] = {
-  { 1, "HAL 9000", 16 * 1000 },
-  { 2, "Sauruman", 28 * 1000 },
-  { 3, "Dobby", 10 * 1000 }
+  { 1, "groeilood", 22 * 1000 },
+  { 2, "clockmaker", 28 * 1000 },
+  { 2, "ultraoortje", 10 * 1000 },
+  { 3, "gevoelensradio", 16 * 1000 }
 };
 const uint8_t numTracks = sizeof(tracks) / sizeof(tracks[0]);
 
@@ -62,8 +63,8 @@ const int ledPin = 8;
 // ESP-NOW peer addresses (MAC addresses of the buttons - see "mac.ino" for details)
 uint8_t button1_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74 };
 uint8_t button2_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 };
-// uint8_t button3_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x76};
-// uint8_t button4_mac[] = {0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x77};
+uint8_t button3_mac[] = {0xD8, 0x3B, 0xDA, 0x46, 0x59, 0x5C};
+uint8_t button4_mac[] = {0xD8, 0x3B, 0xDA, 0x46, 0x64, 0x00};
 
 // Variables to store the received button ID & sender IDs
 volatile int ReceivedButtonID = 0;
@@ -129,8 +130,8 @@ void setup() {
 
   addPeer(button1_mac);
   addPeer(button2_mac);
-  // addPeer(button3_mac);
-  // addPeer(button4_mac);
+  addPeer(button3_mac);
+  addPeer(button4_mac);
 
   // boot blink led
   for (int i = 0; i < 5; i++) {

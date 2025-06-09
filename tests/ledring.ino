@@ -11,7 +11,7 @@ const int ledPin = 2; // led data on D1
 const int N_LEDs = 16;
 
 // configure neopixel strip
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDs, ledPin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDs, ledPin, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
   // initiate neopixel strip

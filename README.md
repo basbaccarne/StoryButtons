@@ -29,7 +29,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 ## Parts and electronic components
 
 <details>
-  <summary><strong>🪛 Show the full Bill of Materials</strong></summary>
+  <summary>🪛 Show the full Bill of Materials</summary>
 
 | Part     | Link    | Cost   | Amount  |
 | -------- | ------- |------- | ------- |
@@ -91,6 +91,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 ### 🎧 Listen Module
 * Technical set-up:   
+
   * Since we're only creating a single listening hub, we're building this one on a breadboard.    
 
   * See parts list and schematic for the components and wiring.   
@@ -109,13 +110,25 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 
 ## Code
-- [ ] First retrieve the MAC-adresses of the buttons and hub using [this code](tests/mac.ino) and add this to the code (all buttons ids in the hub, hub in the buttons).   
-- [ ] Next, assign each button ID to the audio files on the SD card and change the metadata in the hub code. 
-- [ ] Then set the button ID for each button before oploading the code.   
+First retrieve the MAC-adresses of the buttons and hub using [this code](tests/mac.ino) and add this to the code (all buttons ids in the hub, hub in the buttons). Next, assign each button ID to the audio files on the SD card and change the metadata in the hub code. Then set the button ID for each button before oploading the code.    
 
-* 🎧⌨️ [Code for the button](src/button.ino)
-* 🔘⌨️ [Code for the hub](src/hub.ino)
-* [Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)
+* 🎧⌨️ [Code for the button](src/button.ino) 
+* 🔘⌨️ [Code for the hub](src/hub.ino)   
+</br>   
+* 🎙️🔗[Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)   
+
+</br>   
+
+* `Internal reference`   
+  | Part     | MAC    | 
+  | -------- | ------- |
+  | hub | `48:27:E2:E7:1B:F4` |
+  | button 1 | `D8:3B:DA:73:C6:74`|
+  | button 2 | `D8:3B:DA:73:C4:58`|
+  | button 3 | `D8:3B:DA:46:59:5C`|
+  | button 4 | `D8:3B:DA:46:64:00`|
+
+
 
 ## Tests
 > **_NOTE:_** This is the overview of tests and micro-experiments that are part of this project.   
@@ -130,6 +143,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 **Output** (led ring - Neopixel)
 * [LED ring simple chase animation](tests/ledring.ino)   
+* [LED ring led by led count + print for debugging](tests/led_test.ino)
 * [LED ring countdown](tests\ledring_countdown.ino)
 * [LED softpulse](tests\softpulse.ino)
 

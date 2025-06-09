@@ -26,7 +26,7 @@ int stopCode = 0;
 // pins
 const int buttonPin = 3;
 const int ledPin = 2;
-const int N_LEDs = 24;
+const int N_LEDs = 16;
 
 // LED settings and variables
 int brightness = 0;
@@ -35,7 +35,7 @@ unsigned long previousMillis_led;
 float breathAngle = 0;
 
 // configure neopixel strip
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDs, ledPin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDs, ledPin, NEO_GRBW + NEO_KHZ800);
 
 // variables to audio length in milliseconds
 volatile unsigned long AudioLength = 10000;
