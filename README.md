@@ -115,7 +115,6 @@ First retrieve the MAC-adresses of the buttons and hub using [this code](tests/m
 
 * 🎧⌨️ [Code for the button](src/button.ino) 
 * 🔘⌨️ [Code for the hub](src/hub.ino)   
-</br>   
 * 🎙️🔗 [Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)   
 
 </br>   
