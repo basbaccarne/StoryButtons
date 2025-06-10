@@ -3,7 +3,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 *⚡A  [comon](http://www.comon.gent) spark⚡*    
 *Tinkered with* ❤ *by Bas Baccarne*   
-*Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Fran Burger & Stephanie Van Hove*
+*Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Fran Burger, Diederik Van Eetvelde & Stephanie Van Hove*
 
 ## Concept
 
@@ -18,6 +18,11 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
   * Listens to incoming IDs and plays the associated audio file (and send back duration to the sending button).
   * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
   * The audio can be listened to through headphones.
+
+**Lightbulbs**
+* Smart lightbulbs light up next to the object that is linked to the story
+* Powered by 220V (lightbulb) and 5V (microcontroller)
+* Listens to signals from the hub
 
 
   <div align="center">  
@@ -119,7 +124,7 @@ First retrieve the MAC-adresses of the buttons and hub using [this code](tests/m
 
 </br>   
 
-* `Internal reference`   
+ `Internal reference`   
   | Part     | MAC    | 
   | -------- | ------- |
   | hub | `48:27:E2:E7:1B:F4` |
