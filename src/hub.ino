@@ -51,8 +51,8 @@ struct Track {
 const Track tracks[] = {
   { 1, "groeilood", 22 * 1000 },
   { 2, "clockmaker", 28 * 1000 },
-  { 2, "ultraoortje", 10 * 1000 },
-  { 3, "gevoelensradio", 16 * 1000 }
+  { 3, "ultraoortje", 10 * 1000 },
+  { 4, "gevoelensradio", 16 * 1000 }
 };
 const uint8_t numTracks = sizeof(tracks) / sizeof(tracks[0]);
 
@@ -65,6 +65,12 @@ uint8_t button1_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC6, 0x74 };
 uint8_t button2_mac[] = { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 };
 uint8_t button3_mac[] = {0xD8, 0x3B, 0xDA, 0x46, 0x59, 0x5C};
 uint8_t button4_mac[] = {0xD8, 0x3B, 0xDA, 0x46, 0x64, 0x00};
+uint8_t bulb_macs[][6] = {
+  { 0xD8, 0x3B, 0xDA, 0x46, 0x59, 0x88 }, // bulb1
+  { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x58 }, // bulb2
+  { 0xD8, 0x3B, 0xDA, 0x46, 0x59, 0x5C }, // bulb3
+  { 0xD8, 0x3B, 0xDA, 0x46, 0x64, 0x00 }  // bulb4
+};
 
 // Variables to store the received button ID & sender IDs
 volatile int ReceivedButtonID = 0;
@@ -85,9 +91,10 @@ DFRobotDFPlayerMini myDFPlayer;
 void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   // on valid message
   if (len == sizeof(int)) {
-    memcpy(penultimateSenderMac, lastSenderMac, 6);
-    memcpy((void *)&ReceivedButtonID, data, sizeof(int));
-    memcpy(lastSenderMac, info->src_addr, 6);
+    previousButtonID = ReceivedButtonID; // store the previous button ID
+    memcpy(penultimateSenderMac, lastSenderMac, 6); // store the previous sender's MAC address
+    memcpy((void *)&ReceivedButtonID, data, sizeof(int)); // store the received button ID
+    memcpy(lastSenderMac, info->src_addr, 6); // store the sender's MAC address
     newButtonData = true;
   }
 }
@@ -102,6 +109,17 @@ void addPeer(uint8_t *mac) {
     if (esp_now_add_peer(&peerInfo) != ESP_OK) {
       Serial.println("Failed to add peer");
     }
+  }
+}
+
+// Function to turn the invention lights on and off
+void setLightBulb(uint8_t *mac, bool lightOn) {
+  uint8_t lightTurnedOn = lightOn ? 1 : 0; // Convert to uint8_t
+  esp_err_t result = esp_now_send(mac, &lightTurnedOn, sizeof(lightTurnedOn));
+  if (result == ESP_OK) {
+    Serial.printf("✅ Bulb %s successfully.\n", lightOn ? "turned on" : "turned off");
+  } else {
+    Serial.printf("❌ Send error: %d\n", result);
   }
 }
 
@@ -132,6 +150,16 @@ void setup() {
   addPeer(button2_mac);
   addPeer(button3_mac);
   addPeer(button4_mac);
+  addPeer(bulb_macs[0]); // bulb1
+  // add others ... when ready
+
+  // light all the lights for 1 second
+  Serial.println("➡️ Turning all lights on for 1 second ...");
+  setLightBulb(bulb_macs[0], true);
+  delay(1000);
+  setLightBulb(bulb_macs[0], false);
+  delay(1000);
+  // add others when ready
 
   // boot blink led
   for (int i = 0; i < 5; i++) {
@@ -140,7 +168,7 @@ void setup() {
   digitalWrite(ledPin, LOW);
   delay(100);
   }
-    
+
   Serial.println("✅ Listening hub ready");
   Serial.println();
 }
@@ -160,6 +188,8 @@ void loop() {
       Serial.println("");
       myDFPlayer.stop();
       delay(100);
+      // Turn off light bulb
+      setLightBulb(bulb_macs[previousButtonID - 1], false); 
     }
 
     // If the ID is within valid range
@@ -170,6 +200,7 @@ void loop() {
         int interruptCode = 0;
         Serial.println("➡️ Sending interrupt code to previous sender.");
         esp_now_send(penultimateSenderMac, (uint8_t *)&interruptCode, sizeof(interruptCode));
+        setLightBulb(bulb_macs[previousButtonID - 1], false); // turn off the previous light bulb
         delay(10);
 
       } 
@@ -186,6 +217,9 @@ void loop() {
       Serial.println(tracks[ReceivedButtonID - 1].name);
       myDFPlayer.play(tracks[ReceivedButtonID - 1].number);
       Serial.println("");
+
+      // ... and light the associated light bulb
+      setLightBulb(bulb_macs[ReceivedButtonID - 1], true);
       
     }
     // if the ID is out of range

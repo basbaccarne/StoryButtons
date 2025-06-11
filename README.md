@@ -30,7 +30,7 @@ The set-up comprises **three main components**. For flexibility reasons, we have
 
 **💡 Invention lightbulbs**
 * One light bulb per invention (as many as you want), each powered by 220V.
-* These lighbulbs listen for signal from the hub. 
+* These lighbulbs listen for a signal from the hub. 
 * Smart lightbulbs light up next to the object that is linked to the story
 * Powered by 220V (lightbulb) and 5V (microcontroller)
 * Listens to signals from the hub
@@ -147,7 +147,7 @@ The following section describes the physical build-up and wiring. The software i
     <img src="img/listeninghub.jpg" width="200">
 </div>   
 
-### 💡 Lightbulb
+### 💡 Lightbulb module
 The invention light module makes use of ``traditional E27 socket LED light bulbs`` that run on 220V. This allows to use multple light bulbs that can be found in any store. The module uses a relay to open and close the circuit and taps power from the 220V AC signal using an output switching power supply top power the XIAO microcontroller.
 
 <div align="center">
@@ -183,8 +183,8 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
   | button 2 | `D8:3B:DA:73:C4:58`|
   | button 3 | `D8:3B:DA:46:59:5C`|
   | button 4 | `D8:3B:DA:46:64:00`|
-  | bulb 1 | ``|
-  | bulb 2 | ``|
+  | bulb 1 | `D8:3B:DA:46:59:88`|
+  | temp H | `D8:3B:DA:46:68:5C`|
   | bulb 3 | ``|
   | bulb 4 | ``|
 
