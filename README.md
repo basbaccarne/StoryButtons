@@ -1,5 +1,7 @@
 # StoryButtons
-StoryButtons is an interactive audio installation featuring wireless LED-ringed buttons that play recorded stories from children about their inventions. Designed for libraries and educational spaces, each button triggers a unique story, creating a playful and engaging way to explore young creativity. This repository contains the code, hardware setup, and deployment instructions for building your own StoryButtons system.
+StoryButtons is an interactive audio installation featuring ``wireless LED-ringed buttons`` that play recorded stories from children about their inventions and independent ``invention light bulbs`` that light up next to the objects linked to the story. The audio can be listed to on an independent ``listening module``. 
+
+Designed for libraries and educational spaces, each button triggers a unique story, creating a playful and engaging way to explore young creativity. This repository contains the code, hardware setup, and deployment instructions for building your own StoryButtons system.
 
 *⚡A  [comon](http://www.comon.gent) spark⚡*    
 *Tinkered with* ❤ *by Bas Baccarne*   
@@ -7,19 +9,28 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 
 ## Concept
 
-**Independent push buttons**
-  * One button per invention (as many as you want), each powered by 5V.
-  * When pushed, they send their ID to the hub that answers with the length of the associated audio file (over ESP-NOW).
-  * A second push while playing stops the audio
-  * Other buttons can interupt
+The set-up comprises **three main components**. For flexibility reasons, we have chosen to develop each component as an independent module that only requires power (5V for the buttons and listening hub, 220V for the light bulbs). Communication between the modules is using ``ESP-NOW``.
 
-**Listen hub**
+**🔘 Independent push buttons**
+  * One button per invention (as many as you want), each powered by 5V.
+  * When pushed, the button sends its ID to the hub that answers with the length of the associated audio file.
+  * A second push while playing stops the audio.
+  * Other buttons can interupt.
+  * Else, the audio stops after the communicated length has been reached.
+  * A led ring communicates the system status (idle, playing, stopping, ...).
+
+**🎧 Listen hub**
   * Single hub (or multiple if you want them on multiple places), powered by 5V.
-  * Listens to incoming IDs and plays the associated audio file (and send back duration to the sending button).
-  * These audiofiles are prerecorded and stored on an sd card (DFplayer mini).
+  * The hub listens to incoming IDs.
+  * On a received ID, it plays the associated audio file and sends back duration to the sending button. 
+  * When the audio starts, the hub also sends a signal to the associated lightbulb.
+  * When the hub receives ``ID=0``, stops playing and sends a signal to the associated lightbulb to go out.
+  * The audiofiles are prerecorded and stored on an SD card (DFplayer mini).
   * The audio can be listened to through headphones.
 
-**Lightbulbs**
+**💡 Invention lightbulbs**
+* One light bulb per invention (as many as you want), each powered by 220V.
+* These lighbulbs listen for signal from the hub. 
 * Smart lightbulbs light up next to the object that is linked to the story
 * Powered by 220V (lightbulb) and 5V (microcontroller)
 * Listens to signals from the hub
@@ -34,7 +45,7 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 ## Parts and electronic components
 
 <details>
-  <summary>🪛 Show the full Bill of Materials</summary>
+  <summary>🪛 Full Bill of Materials</summary>
 
 | Part     | Link    | Cost   | Amount  |
 | -------- | ------- |------- | ------- |
@@ -89,17 +100,21 @@ StoryButtons is an interactive audio installation featuring wireless LED-ringed 
 </details>
 
 ## Construction & wiring
+The following section describes the physical build-up and the software for each of the components.
 ### 🔘 Button module  
-* The button is a stainless steel button   
+* The button itself is a [stainless steel button](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html)    
 
-* The top of the module is a lasercutted piece of 3mm acryl
-  * `Interal note`
-    * 3mm perfect settings local laser: `power 65% - speed 0.6%`
-    * 1mm perfect settings local laser: `power 50% - speed 0.8%`
-* The led ring holder, the sleeve and the bottom piece are 3D printed
-  * 🧊 [Downloadable model in Fusion 360](https://a360.co/4kx6gfg)
-  * Use threaded inserts on the bottom of the ledring for mounting
-* With a custom PCB inside (see Parts list)
+* The top of the module is a lasercutted piece of 3mm acryl.   
+
+  * `Interal note`: perfect settings for the laser: `power 65% - speed 0.6%`   
+
+* (1) The led ring holder, (2) the sleeve and (3) the bottom piece are 3D printed
+  * 🧊 [Downloadable model in Fusion 360](https://a360.co/4kx6gfg)   
+
+* A LED ring (N_LEDs=16) is mounted between the acryl top and the led ring holder.
+  Use M3 threaded inserts and hexagonal spacers on the bottom of the ledring for mounting.   
+
+* Inside is a a custom PCB inside (see Parts list)
   <div align="center">  
   <img src="img/schematic.png" width="400">
   </div>
