@@ -100,7 +100,7 @@ The set-up comprises **three main components**. For flexibility reasons, we have
 </details>
 
 ## Construction & wiring
-The following section describes the physical build-up and the software for each of the components.
+The following section describes the physical build-up and wiring. The software is described in the next section.
 ### 🔘 Button module  
 * The button itself is a [stainless steel button](https://www.conrad.be/nl/p/tru-components-tc-9563704-druktoets-12-v-0-005-a-1x-uit-aan-contact-element-o-x-h-24-7-mm-x-14-5-mm-ip65-1-stuk-s-bulk-2390926.html)    
 
@@ -114,7 +114,7 @@ The following section describes the physical build-up and the software for each 
 * A LED ring (N_LEDs=16) is mounted between the acryl top and the led ring holder.
   Use M3 threaded inserts and hexagonal spacers on the bottom of the ledring for mounting.   
 
-* Inside is a a custom PCB inside (see Parts list)
+* Inside is a a custom PCB inside (see parts list)
   <div align="center">  
   <img src="img/schematic.png" width="400">
   </div>
@@ -123,24 +123,31 @@ The following section describes the physical build-up and the software for each 
   <img src="img/pcb_model.png" width="200">
   </div>
 
+  <div align="center">
+    <img src="img/button1.jpg" width="200">
+    <img src="img/button2.jpg" width="200">
+</div>   
+
 ### 🎧 Listen Module
 * Technical set-up:   
 
   * Since we're only creating a single listening hub, we're building this one on a breadboard.    
-
-  * See parts list and schematic for the components and wiring.   
-  * A blue status led indicates if something is playing. The device is powered by 5V and has a 3.5mm audio jack for headphones.
+  * See parts list and schematic for the components.   
+  * A ``blue status led`` indicates if something is playing. 
+  * The device is powered by 5V and has a 3.5mm audio jack for headphones.
 
 <div align="center">
     <img src="img/schematic2.png" width="400">
 </div>   
 
 * Physical set-up:
-  * We still need to define the final form factor.   
-
-  * The idea is to install this in a big teddybear
-  * Currently, eveything is integrated in this box (threaded inserts on the sides on the bottom components)
+  * For this iteration, the box will be integrated in a bigger module and will be higgen.
+  * Therefore, eveything is integrated in this box (threaded inserts on the sides on the bottom components)
     *  🧊 [Downloadable model in Fusion 360](https://a360.co/3ZGuyeM)
+
+  <div align="center">
+    <img src="img/listeninghub.jpg" width="200">
+</div>   
 
 ### 💡 Lightbulb
 
