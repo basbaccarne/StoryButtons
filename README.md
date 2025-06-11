@@ -34,8 +34,6 @@ The set-up comprises **three main components**. For flexibility reasons, we have
 * Smart lightbulbs light up next to the object that is linked to the story
 * Powered by 220V (lightbulb) and 5V (microcontroller)
 * Listens to signals from the hub
-
-
   <div align="center">  
   </br>
   <img src="img\conceptual model.png" width="400">
