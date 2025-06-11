@@ -191,7 +191,7 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
   </summary>
 
 ## Tests
-> **_NOTE:_** This is the overview of tests and micro-experiments that are part of this project.   
+>This is the overview of tests and micro-experiments that are part of this project.   
 
 **Input** (touch - Button) 
 * Push: [Pull-up button](test/push.ino)
@@ -222,7 +222,7 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
 
 
 ## Background
-> **_NOTE:_** This is section covers some research and background information
+> This is section covers some research and background information
 ### Create a custom PCB
 * For this case, I'm creating a custom PCB to illustrate the flow on a simple example
 * If you're new to this, it might be easer to work in [easyEDA](easyeda.com), then import the STEP file in you CAD program
