@@ -129,7 +129,7 @@ The following section describes the physical build-up and wiring. The software i
 </div>   
 
 ### 🎧 Listen Module
-* Technical set-up:   
+**Technical set-up**  
 
   * Since we're only creating a single listening hub, we're building this one on a breadboard.    
   * See parts list and schematic for the components.   
@@ -140,7 +140,7 @@ The following section describes the physical build-up and wiring. The software i
     <img src="img/schematic2.png" width="400">
 </div>   
 
-* Physical set-up:
+**Physical set-up**
   * For this iteration, the box will be integrated in a bigger module and will be higgen.
   * Therefore, eveything is integrated in this box (threaded inserts on the sides on the bottom components)
     *  🧊 [Downloadable model in Fusion 360](https://a360.co/3ZGuyeM)
@@ -150,75 +150,29 @@ The following section describes the physical build-up and wiring. The software i
 </div>   
 
 ### 💡 Lightbulb
+The invention light module makes use of ``traditional E27 socket LED light bulbs`` that run on 220V. This allows to use multple light bulbs that can be found in any store. The module uses a relay to open and close the circuit and taps power from the 220V AC signal using an output switching power supply top power the XIAO microcontroller.
 
-**Option 1: Regular lightbulb (220v)**   
+<div align="center">
+    <img src="img/schematic3.png" width="400">
+</div>   
 
-🔌 AC Mains Inlet
-```
-[C8 power inlet]
-   ├– Live (Brown) ──┬──> Terminal‑block “L” → Mean Well L input  
-   │                 └──> Terminal‑block “L” → Relay COM  
-   └– Neutral (Blue) ─┬──> Terminal‑block “N” → Mean Well N input  
-                       └──> Terminal‑block “N” → Lightbulb sleeve
-```
-🌩︎ Mean Well RS‑15‑5 Power Supply (5 V DC, 3 A)
-```
-Input side (AC):
-   ├– Live (from C8 power inlet L terminal)  
-   └– Neutral (from C8 power inlet N terminal)
+<details>
+  <summary>Backup option</summary>
+  In case we want to try something else. We could also make use of 5V based systems that would allign with the other components and might be safer (working with 5V instead of 220V). This could entail the following components.   
 
-Output side (DC):
-   ├– V+ → 5 V input to Seeed XIAO  
-   └– V– → Shared GND (Seeed XIAO GND, TTL GND HV, Relay –)
-```
+  * DIY using [filamanent leds](https://opencircuit.be/list/led-filament) (e.g. wrapped or 2 sticks)
+  * Combined with [hobby lamp bulb shells](https://www.amazon.com/Creative-Hobbies-Plastic-Fillable-Weddings/dp/B00X66WJBI)
+  * Or: Stock USB led (retro style)
+</details>
 
-🧠 Seeed XIAO ESP32‑S3 Module
-```
-Power:
-   ├– 5 V (Mean Well) → 5V pin  
-   └– GND (Mean Well) → common ground rail
 
-Logic:
-   ├– 3V3 → LV VCC pin on TTL level shifter  
-   ├– GND → LV GND pin on TTL  
-   └– D1 (GPIO2) → LV TXI pin on TTL shifter
-```
-⚡ DFRobot 3.3 V/5 V TTL Dual Direction Level Shifter
-```
-HV (high voltage) SIDE (5 V logic):
-   ├– HV VCC → +5 V rail from Mean Well  
-   ├– HV GND → common ground  
-   └– HV RXO → Relay “D” control input
-
-LV (low voltage) SIDE (3.3 V logic):
-   ├– LV VCC → 3.3 V pin from XIAO  
-   ├– LV GND → common ground  
-   └– LV TXI → XIAO D1 (GPIO2)
-```
-🔄 Whadda WPI410 5 V Relay Board
-```
-Power and Control:
-   ├– +5 V → HV VCC from TTL  
-   ├– GND → HV GND from TTL  
-   └– D (signal) → HV RXO from TTL
-
-```
-💡 Lightbulb
-```
-─ Tip → Relay NO (normally open)
-─ Sleeve → Neutral from C8 power inlet inlet
-```
-
-Option 2: LED-based (5V)
-* DIY using [filamanent leds](https://opencircuit.be/list/led-filament) (e.g. wrapped or 2 sticks)
-* Combined with [hobby lamp bulb shells](https://www.amazon.com/Creative-Hobbies-Plastic-Fillable-Weddings/dp/B00X66WJBI)
-* Or: Stock USB led (retro style)
 
 ## Code
-First retrieve the MAC-adresses of the buttons and hub using [this code](tests/mac.ino) and add this to the code (all buttons ids in the hub, hub in the buttons). Next, assign each button ID to the audio files on the SD card and change the metadata in the hub code. Then set the button ID for each button before oploading the code.    
+First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](tests/mac.ino) and add this to the code (all buttons ids and bulb ids in the hub, hub in the buttons & bulbs). Next, assign each button ID to the audio files on the SD card and change the metadata in the hub code. Then set the button ID for each button before oploading the code.    
 
 * 🎧⌨️ [Code for the button](src/button.ino) 
 * 🔘⌨️ [Code for the hub](src/hub.ino)   
+* 💡⌨️ [Code for the bulb](src/bulb.ino)
 * 🎙️🔗 [Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)   
 
 </br>   
@@ -231,6 +185,10 @@ First retrieve the MAC-adresses of the buttons and hub using [this code](tests/m
   | button 2 | `D8:3B:DA:73:C4:58`|
   | button 3 | `D8:3B:DA:46:59:5C`|
   | button 4 | `D8:3B:DA:46:64:00`|
+  | bulb 1 | ``|
+  | bulb 2 | ``|
+  | bulb 3 | ``|
+  | bulb 4 | ``|
 
 
 
