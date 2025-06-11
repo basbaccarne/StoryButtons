@@ -172,10 +172,10 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
 * 🔘⌨️ [Code for the hub](src/hub.ino)   
 * 💡⌨️ [Code for the bulb](src/bulb.ino)
 * 🎙️🔗 [Secure link with our audiofiles](https://dekrookbe.sharepoint.com/:f:/s/Comon/EjXA12W-Oa9GrY0zcC7_DVkBA-nyHTXGFnvPkcDvEJWyHQ?e=oS5d5c)   
-
-</br>   
-
- `Internal reference`   
+ 
+  <details>
+    <summary>Internal reference</summary>
+  
   | Part     | MAC    | 
   | -------- | ------- |
   | hub | `48:27:E2:E7:1B:F4` |
@@ -188,7 +188,7 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
   | bulb 3 | ``|
   | bulb 4 | ``|
 
-
+  </summary>
 
 ## Tests
 > **_NOTE:_** This is the overview of tests and micro-experiments that are part of this project.   
