@@ -87,12 +87,15 @@ The set-up comprises **three main components**. For flexibility reasons, we have
 | XIAO ESP32S3  | [Seeed](https://wiki.seeedstudio.com/XIAO_ESP32S3_Getting_Started/)   | $7,60 | 1 |
 | DFRobot Gravity Relay | [DFRobot](https://www.dfrobot.com/product-64.html?srsltid=AfmBOorzeaMwytGhyvNKhQrwiwTJ9ZjilJTNmSWyme_uAl1VKIbh9pgf) | €3 | 1 |
 | 3,3 V / 5 V TTL logic level shifter | [Conrad](https://www.conrad.be/nl/p/whadda-wpi410-uitbreidingsboard-1-stuk-s-2481852.html) | €7 | 1 |
-| E27 light bulb socket |[Retro model](https://electricalsone.co.uk/products/light-bulb-holder-vintage-industrial-antique-retro-lamp-edison-es-e27-fitting)||
+| E27 light bulb socket |[Retro model](https://www.amazon.nl/dp/B09ZPQRFXH?ref=ppx_yo2ov_dt_b_fed_asin_title)| €10 | 1| 
+| M10 bevestigingsmoer | [Conrad](https://www.conrad.be/nl/p/psp-mutter-m10-alpha-bevestigingsmoer-metaal-1-stuk-s-1780978.html) | €0,5 | 2 |
+| M10 Hollow threaded connector | [Amazon](https://www.amazon.com.be/-/nl/sourcing-stuks-schroefdraadfittingen-lampreparatie-lengte/dp/B01FITIIS8/)| €1 | 1 |
 | E27 LED light bulb |||
 | AC/DC power supply | [Conrad](https://www.conrad.be/nl/p/mw-mean-well-rs-15-5-schakelnetvoedingsmodule-5-v-dc-3-a-15-w-1297280.html#productDownloads) | €11 | 1 |
-| C8 female wall connector | | |
-| C7 power cable | | |
-| Panel Mount Terminal Blocks | [Farnell](https://be.farnell.com/en-BE/multicomp-pro/mc24335/terminal-block-barrier-2-position/dp/1624263?MER=BR-MER-PDP-RECO-STM72194) | ||
+| C8 female wall connector | [Conrad](https://www.conrad.be/nl/p/tru-components-tc-10475836-apparaatstekker-koud-c8-stekker-inbouw-verticaal-totaal-aantal-polen-2-2-5-a-zwart-1-stuk-2618959.html#productDownloads) | €1,5 | 1 |
+| C7 power cable | [Conrad](https://www.conrad.be/nl/p/value-euro-stroomkabel-met-platte-stekker-haaks-op-c7-2-polig-zwart-1-8-m-2559109.html)| €3 | 1 |
+| Panel Mount Terminal Blocks | [Farnell](https://be.farnell.com/en-BE/multicomp-pro/mc24335/terminal-block-barrier-2-position/dp/1624263?MER=BR-MER-PDP-RECO-STM72194) | €2 | 1|
+| Geïsoleerde oogkabelschoenen |||
 
 
 </details>
