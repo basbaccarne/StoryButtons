@@ -14,6 +14,7 @@
 // Libraries
 #include <esp_now.h>
 #include <WiFi.h>
+#include "esp_wifi.h"
 #include <Adafruit_NeoPixel.h>
 
 // SETTINGS
@@ -60,10 +61,39 @@ ButtonState previousState = IDLE;
 
 // Function to handle incoming data (store audio length in AudioLength)
 // This function is called when data is received from the hub (like an interrupt handler)
-void OnDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
-  if (len == sizeof(unsigned long)) {
-    memcpy((void *)&AudioLength, data, sizeof(unsigned long));
-    newAudioData = true;
+void OnDataRecv(const esp_now_recv_info_t *recv_info, const uint8_t *data, int len) {
+  if (len < 1) return;
+  uint8_t msgType = data[0];
+
+  if (msgType == 0x02) {
+    Serial.println("🛑 Received 'stop' command from hub");
+    Serial.println();
+    Serial.println("⬅️ Another button took over.");
+    Serial.println("🔁 Switching to OVERLAP_STOP.");
+    currentState = OVERLAP_STOP;
+  }
+
+  else if (msgType == 0x01 && len == 1 + sizeof(unsigned long)) {
+    unsigned long received = 0;
+    memcpy(&received, data + 1, sizeof(unsigned long));
+    if (received >= 500 && received <= 5 * 60 * 1000) {
+      AudioLength = received;
+      newAudioData = true;
+      Serial.printf("📥 Received valid audio length: %lu ms\n", AudioLength);
+      Serial.println();
+    } else {
+      Serial.printf("🚫 Ignored suspicious audio length: %lu\n", received);
+      Serial.println();
+    }
+  }
+
+  else {
+    Serial.println("Unknown message type");
+
+    if (currentState == WAIT_FOR_AUDIO_LENGTH || currentState == PLAYING) {
+      AudioLength = 0;
+      newAudioData = true;
+    }
   }
 }
 
@@ -75,6 +105,8 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   delay(100);
+  esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
+  esp_wifi_set_max_tx_power(78);  // 19.5 dBm
   if (esp_now_init() != ESP_OK) {
     Serial.println("Error initializing ESP-NOW");
     while (true) delay(1000);
@@ -137,9 +169,11 @@ void idle_sequence(bool buttonPushed) {
   }
   digitalWrite(ledPin, HIGH);
   if (buttonPushed == HIGH) {
+    delay(10);
     canBepushed = true;
   }
   if (buttonPushed == LOW && canBepushed) {
+    delay(10);
     currentState = WAIT_FOR_AUDIO_LENGTH;
     Serial.println("🔘 Button pressed.");
     canBepushed = false;
@@ -168,21 +202,13 @@ void wait_for_audio_length_sequence() {
 
   // If new audio data received
   if (newAudioData) {
-    Serial.printf("⬅️ Received audio length: %d ms\n", AudioLength);
     newAudioData = false;
     sent = false;
-
-    if (AudioLength <= 0) {
-      Serial.println();
-      Serial.println("⬅️ Another button took over. Switching to OVERLAP_STOP.");
-      currentState = OVERLAP_STOP;
-    } else {
-      currentState = PLAYING;
-    }
+    currentState = PLAYING;
   }
 
   // Timeout fallback
-  if (millis() - startTime >= 1000) {
+  if (millis() - startTime >= 2000) {
     Serial.println("❌ Timeout waiting for audio length! Defaulting to 10s...");
     AudioLength = 10000;
     newAudioData = false;
@@ -228,13 +254,7 @@ void playing_sequence(int buttonPushed) {
     started = false;
   }
 
-  // Interrupt by another button
-  if (AudioLength <= 0) {
-    Serial.println();
-    Serial.println("⬅️ Another button took over.");
-    Serial.println("🔁 Switching to OVERLAP_STOP.");
-    currentState = OVERLAP_STOP;
-  }
+
 }
 
 void manual_stop_sequence() {
@@ -250,9 +270,9 @@ void manual_stop_sequence() {
     previousState = MANUAL_STOP;
   }
 
-   led_manual_stop();
+  led_manual_stop();
 
-    // change state after 1 second
+  // change state after 1 second
   if (millis() - startTime >= 1000) {
     currentState = IDLE;
   }
@@ -272,25 +292,29 @@ void automatic_stop_sequence() {
   }
 
   led_automatic_stop();
-    // change state after 1 second
+  // change state after 1 second
   if (millis() - startTime >= 1000) {
     currentState = IDLE;
   }
 }
 
 void overlap_stop_sequence() {
-  
-  // This state is not used in this implementation, but can be used for future features
-  // like overlapping audio playback or other advanced features.
+
   if (previousState != OVERLAP_STOP) {
     startTime = millis();
     previousState = OVERLAP_STOP;
+    Serial.println("🔁 Entering OVERLAP_STOP state ...");
   }
 
   led_overlap_stop();
 
   // change state after 1 seond
   if (millis() - startTime >= 1000) {
+    // ✅ Reset critical flags to ensure fresh state
+    AudioLength = 10000;  // or some neutral default value
+    newAudioData = false;
+    canBepushed = false;
+    previousState = OVERLAP_STOP;
     currentState = IDLE;
   }
 }
@@ -298,6 +322,7 @@ void overlap_stop_sequence() {
 void loop() {
 
   int buttonPushed = digitalRead(buttonPin);
+  delay(20);
 
   switch (currentState) {
     case BOOT:
@@ -362,24 +387,24 @@ void led_boot() {
 }
 
 void led_idle() {
-static unsigned long lastUpdate = 0;
+  static unsigned long lastUpdate = 0;
   static float angle = 0.0;
 
-  const float maxBrightness = 0.05;        // 5% of full brightness
+  const float maxBrightness = 0.05;  // 5% of full brightness
   const float gamma = 2.8;
-  const float breathingSpeed = 0.02;       // Smaller = slower breathing
-  const unsigned long updateInterval = 15; // ms between updates
+  const float breathingSpeed = 0.02;        // Smaller = slower breathing
+  const unsigned long updateInterval = 15;  // ms between updates
 
   unsigned long now = millis();
   if (now - lastUpdate >= updateInterval) {
     lastUpdate = now;
 
-    float raw = (sin(angle) + 1.0) / 2.0;         // 0.0 to 1.0
-    float adjusted = pow(raw, gamma);            // gamma correction
+    float raw = (sin(angle) + 1.0) / 2.0;  // 0.0 to 1.0
+    float adjusted = pow(raw, gamma);      // gamma correction
     int brightness = adjusted * 255 * maxBrightness;
 
     for (int i = 0; i < N_LEDs; i++) {
-      strip.setPixelColor(i, strip.Color(brightness, brightness, brightness)); // breathing white
+      strip.setPixelColor(i, strip.Color(brightness, brightness, brightness));  // breathing white
     }
     strip.show();
 
@@ -439,7 +464,7 @@ void led_playing() {
       // Solid blue color at full brightness
       strip.setPixelColor(i, strip.Color(0, 0, 50));
     } else {
-      strip.setPixelColor(i, 0); // turn off
+      strip.setPixelColor(i, 0);  // turn off
     }
   }
 
