@@ -187,9 +187,9 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
   | button 3 | `D8:3B:DA:46:59:5C`|
   | button 4 | `D8:3B:DA:46:64:00`|
   | bulb 1 | `D8:3B:DA:46:59:88`|
-  | temp H | `D8:3B:DA:46:68:5C`|
-  | bulb 3 | ``|
-  | bulb 4 | ``|
+  | bulb 2 | `98:3D:AE:60:46:AC`|
+  | bulb 3 | `D8:3B:DA:75:E8:24`|
+  | bulb 4 | `D8:3B:DA:74:8E:88`|
 
   </summary>
 

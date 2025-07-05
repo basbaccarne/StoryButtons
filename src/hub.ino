@@ -51,10 +51,10 @@ struct Track {
 
 // Metadata for the audio tracks (id, name, duration in ms)
 const Track tracks[] = {
-  { 1, "groeilood", 22 * 1000 },
-  { 2, "clockmaker", 28 * 1000 },
-  { 3, "ultraoortje", 10 * 1000 },
-  { 4, "gevoelensradio", 16 * 1000 }
+  { 1, "groeilood", 23 * 1000 },
+  { 2, "clockmaker", 71 * 1000 },
+  { 3, "ultraoortje", 57 * 1000 },
+  { 4, "gevoelensradio", 58 * 1000 }
 };
 const uint8_t numTracks = sizeof(tracks) / sizeof(tracks[0]);
 
@@ -72,9 +72,9 @@ uint8_t button_macs[][6] = {
 
 uint8_t bulb_macs[][6] = {
   { 0xD8, 0x3B, 0xDA, 0x46, 0x59, 0x88 },  // bulb1
-  { 0xD8, 0x3B, 0xDA, 0x73, 0xC4, 0x20 },  // bulb2
-  { 0xD8, 0x3B, 0xDA, 0x46, 0x59, 0x21 },  // bulb3
-  { 0xD8, 0x3B, 0xDA, 0x46, 0x64, 0x22 }   // bulb4
+  { 0x98, 0x3D, 0xAE, 0x60, 0x46, 0xAC },  // bulb2
+  { 0xD8, 0x3B, 0xDA, 0x75, 0xE8, 0x24 },  // bulb3
+  { 0xD8, 0x3B, 0xDA, 0x74, 0x8E, 0x88 },  // bulb4
 };
 
 // Variables to store the received button ID & sender IDs
@@ -154,7 +154,7 @@ void reaction(int id) {
   // retreive audio length
   audioLength = tracks[id - 1].duration;
   lengthBuffer[0] = 0x01;
-    memcpy(&lengthBuffer[1], &audioLength, sizeof(audioLength));
+  memcpy(&lengthBuffer[1], &audioLength, sizeof(audioLength));
 
   // send audio length or stop code
   Serial.printf("🎵 Sending audio length %lu ms to button %d\n", audioLength, id);
@@ -170,7 +170,6 @@ void reaction(int id) {
     }
   }
  
-
   // play the track
   Serial.print("▶️ Starting track ");
   Serial.print(tracks[receivedButtonID - 1].number);
@@ -178,8 +177,15 @@ void reaction(int id) {
   Serial.println(tracks[receivedButtonID - 1].name);
   myDFPlayer.play(tracks[receivedButtonID - 1].number);
 
-  // turn on the light &nd turn of all the other lights
-  //setLightBulb(bulb_macs[previousButtonID - 1], false);
+  // turn on the light and turn of all the other lights
+  Serial.println("➡️ Turning on the light for the current button ...");
+  for (int i = 0; i < 4; i++) {
+    if (i == receivedButtonID - 1) {
+      setLightBulb(bulb_macs[i], true);
+    } else {
+      setLightBulb(bulb_macs[i], false);
+    }
+  }
 
   // set variables
   currentPlayingButtonID = id;
@@ -219,11 +225,17 @@ void setup() {
   // light all the lights for 1 second
   Serial.println();
   Serial.println("➡️ Turning all lights on for 1 second ...");
-  // setLightBulb(bulb_macs[0], true);
+  setLightBulb(bulb_macs[0], true);
   delay(1000);
-  // setLightBulb(bulb_macs[0], false);
+  setLightBulb(bulb_macs[1], true);
   delay(1000);
-  // add others when ready
+  setLightBulb(bulb_macs[2], true);
+  delay(1000);
+  setLightBulb(bulb_macs[3], true);
+  delay(1000);
+  for (int i = 0; i < 4; i++) {
+    setLightBulb(bulb_macs[i], false);  // turn off all lights
+  }
 
   // boot blink led
   for (int i = 0; i < 5; i++) {

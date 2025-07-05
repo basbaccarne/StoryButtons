@@ -11,8 +11,7 @@
 int bulb_ID = 1;
 
 // ESP-NOW identification of hub
-// CHANGE WITH MAC of final HUB
-uint8_t hub_mac[] = { 0xD8, 0x3B, 0xDA, 0x46, 0x68, 0x5C };
+uint8_t hub_mac[] = { 0x48, 0x27, 0xE2, 0xE7, 0x1B, 0xF4 };
 
 // Pins
 const int relayPin = 2;
