@@ -269,6 +269,11 @@ void loop() {
   if (receivedButtonID == 0) {
     Serial.println("🛑 Stopping playback ...");
     myDFPlayer.stop();
+    
+    for (int i = 0; i < 4; i++) {
+    setLightBulb(bulb_macs[i], false);  // turn off all lights
+    }
+    
     currentPlayingButtonID = 0;
     memset(activeSenderMac, 0, 6);
     delay(10);

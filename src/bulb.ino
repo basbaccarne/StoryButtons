@@ -50,6 +50,7 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT); 
     digitalWrite(relayPin, LOW);
 
+    Serial.println();
     Serial.print("✅ Light bulb ready. ");
     Serial.print("Bulb [[");
     Serial.print(bulb_ID);
