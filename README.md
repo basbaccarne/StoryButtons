@@ -152,6 +152,7 @@ The following section describes the physical build-up and wiring. The software i
 
 ### 💡 Lightbulb module
 The invention light module makes use of ``traditional E27 socket LED light bulbs`` that run on 220V. This allows to use multple light bulbs that can be found in any store. The module uses a relay to open and close the circuit and taps power from the 220V AC signal using an output switching power supply top power the XIAO microcontroller.
+* 🧊 [Downloadable model in Fusion 360](https://a360.co/44ncqti)
 
 <div align="center">
     <img src="img/schematic3.png" width="400">
@@ -220,8 +221,8 @@ First retrieve the MAC-adresses of the buttons, bulbs and hub using [this code](
 **Communication** (ESP-NOW)   
 * [Step 1 - Get MAC adress of the devices](tests/mac.ino)
 * [Step 2 - send data & listen to response (device MAC D8:3B:DA:73:C6:74)](tests/device1.ino)
-* [step 3 - listen to response and answer when message received (device MAC D8:3B:DA:73:C4:58)](tests/device2.ino)
-* [Play sound ID based on ESP-NOW signal](tests/targetted_audio.ino) from a [button](tests/button_espnow.ino)
+* [Step 3 - listen to response and answer when message received (device MAC D8:3B:DA:73:C4:58)](tests/device2.ino)
+* Integration: [Play sound ID based on ESP-NOW signal](tests/targetted_audio.ino) from a [button](tests/button_espnow.ino)
 
 
 ## Background
